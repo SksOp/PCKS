@@ -2,6 +2,10 @@
 
 const { getFirestore } = require("firebase-admin/firestore");
 const { logger } = require("firebase-functions/v1");
+const { setGlobalOptions } = require("firebase-functions/v2");
+
+// Set the maximum instances to 10 for all functions
+setGlobalOptions({ maxInstances: 10 });
 
 const DB = getFirestore();
 
