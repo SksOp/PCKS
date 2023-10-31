@@ -4,10 +4,24 @@ const { initializeApp } = require("firebase-admin/app");
 initializeApp();
 
 const express = require("express");
+const db = require("./db");
 
 const app = express();
 
-//configure the express app
+// configure the express app
+app.get("/", async (req, res) => {
+  const data = {
+    first: "Alan",
+    middle: "Mathison",
+    last: "Turing",
+    born: 1912,
+  };
+  const aTuringRef = db.collection("users").doc("aturing");
+
+  await aTuringRef.set(data);
+  logger.log("Created document with ID: ", aTuringRef.id);
+  res.send("Hello from Firebase!");
+});
 
 // export the express app as an HTTP function
 exports.api = onRequest(app);
