@@ -4,7 +4,7 @@ const { initializeApp } = require("firebase-admin/app");
 initializeApp();
 
 const express = require("express");
-const db = require("./db");
+const { DB } = require("./db");
 
 const app = express();
 
@@ -16,7 +16,7 @@ app.get("/", async (req, res) => {
     last: "Turing",
     born: 1912,
   };
-  const aTuringRef = db.collection("users").doc("aturing");
+  const aTuringRef = DB.collection("users").doc("aturing");
 
   await aTuringRef.set(data);
   logger.log("Created document with ID: ", aTuringRef.id);
