@@ -1,5 +1,10 @@
 {
-  "dependencies": {
-    "express": "^4.18.2"
-  }
+  "name": "pcks",
+  "version": "1.0.0",
+  "description": "This is a service github repo for _Prem Chandra Kids School, Simamrhi_. This repo contains the source code for easy managing students data and their results.",
+  "scripts": {
+    "start": "firebase emulators:start"
+  },
+  "author": "",
+  "license": "ISC"
 }

@@ -16,7 +16,7 @@ app.get("/", async (req, res) => {
     last: "Turing",
     born: 1912,
   };
-  const aTuringRef = DB.collection("users").doc("aturing");
+  const aTuringRef = DB.collection("users").doc("aturing2");
 
   await aTuringRef.set(data);
   logger.log("Created document with ID: ", aTuringRef.id);
