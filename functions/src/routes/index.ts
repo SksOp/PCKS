@@ -1,3 +1,3 @@
 import studentRoutes from "./students";
-
-export { studentRoutes };
+import resultRoutes from "./results";
+export { studentRoutes , resultRoutes};
