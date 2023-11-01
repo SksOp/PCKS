@@ -1,24 +1,31 @@
-name: Firebase Deploy
+# this workflow will create a preview deployment for every PR
+# for hosting and functions on firebase
+
+name: Firebase Preview Deploy
 on:
-  push:
+  pull_request:
     branches: [main]
 
 jobs:
-  build:
+  deploy-preview:
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: Install Packages for Functions
         run: |
           cd functions
           npm install
+
       - name: Install Packages for Hosting
         run: |
           cd hosting
           npm install
-      - name: Deploy to Firebase
+
+      - name: Deploy to Firebase Preview Channel & Functions
         uses: w9jds/firebase-action@master
         with:
-          args: deploy
+          args: deploy --only hosting,functions --to=pr-${{ github.event.pull_request.number }}
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
