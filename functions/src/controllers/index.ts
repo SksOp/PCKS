@@ -1,3 +1,3 @@
 export * from "./student/handleAdmission";
-export * from "./student/handleRollChange";
+export * from "./student/handleChanges";
 // export { handleAdmission, handleRollChange };

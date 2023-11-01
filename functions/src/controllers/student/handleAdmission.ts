@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { STUDENTS_COLLECTION } from "../../db";
 
-
 async function handleAdmission(req: Request, res: Response) {
   {
     const {
@@ -24,8 +23,8 @@ async function handleAdmission(req: Request, res: Response) {
           motherName,
           admissionNo,
           admissionYear,
-          currentClass,
           admissionclass,
+          currentClass,
           currentSection,
           currentRoll,
         },
