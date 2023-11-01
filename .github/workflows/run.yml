@@ -1,4 +1,4 @@
-name: Firebase Deploy
+name: Firebase functions Deploy
 on:
   push:
     branches: [main]
@@ -12,13 +12,10 @@ jobs:
         run: |
           cd functions
           npm install
-      - name: Install Packages for Hosting
-        run: |
-          cd hosting
-          npm install
+      
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy
+          args: deploy --only functions
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
