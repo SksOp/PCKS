@@ -4,7 +4,23 @@ on:
     branches: [main, dev]
 
 jobs:
-  build:
+  build_and_deploy_hosting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+        cd hosting
+        npm i
+        npm run build
+        cd ..
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PCKSSTM }}'
+          channelId: live
+          projectId: pcksstm
+
+  build_deploy_firebase_functions:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,3 +34,4 @@ jobs:
           args: deploy --only functions
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
