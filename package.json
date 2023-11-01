@@ -1,5 +1,6 @@
 {
   "scripts": {
-    "dev": "cd functions && npm run dev"
+    "server": "cd functions && npm run server",
+    "dev": "echo try using ____S______--K---____S____ npm run server"
   }
 }
