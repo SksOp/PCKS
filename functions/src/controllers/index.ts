@@ -1,3 +1,3 @@
-import handleAdmission from "./student/handleAdmission";
-
-export { handleAdmission };
+export * from "./student/handleAdmission";
+export * from "./student/handleRollChange";
+// export { handleAdmission, handleRollChange };

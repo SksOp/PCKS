@@ -8,12 +8,12 @@ async function handleAdmission(req: Request, res: Response) {
       fatherName,
       motherName,
       admissionNo,
-      admissionyear,
+      admissionYear,
       admissionclass,
       currentClass,
-      crrentSection,
+      currentSection,
     } = req.body;
-    const aTuringRef = STUDENTS_COLLECTION.doc("aturing");
+    const aTuringRef = STUDENTS_COLLECTION.doc(admissionNo);
     try {
       await aTuringRef.set(
         {
@@ -21,10 +21,10 @@ async function handleAdmission(req: Request, res: Response) {
           fatherName,
           motherName,
           admissionNo,
-          admissionyear,
+          admissionYear,
           currentClass,
           admissionclass,
-          crrentSection,
+          currentSection,
         },
         { merge: true }
       );
@@ -36,4 +36,4 @@ async function handleAdmission(req: Request, res: Response) {
   }
 }
 
-export default handleAdmission;
+export { handleAdmission };
