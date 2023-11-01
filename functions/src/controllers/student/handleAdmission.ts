@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { STUDENTS_COLLECTION } from "@/db";
+import { STUDENTS_COLLECTION } from "../../db";
+
 
 async function handleAdmission(req: Request, res: Response) {
   {
@@ -12,6 +13,7 @@ async function handleAdmission(req: Request, res: Response) {
       admissionclass,
       currentClass,
       currentSection,
+      currentRoll,
     } = req.body;
     const aTuringRef = STUDENTS_COLLECTION.doc(admissionNo);
     try {
@@ -25,6 +27,7 @@ async function handleAdmission(req: Request, res: Response) {
           currentClass,
           admissionclass,
           currentSection,
+          currentRoll,
         },
         { merge: true }
       );

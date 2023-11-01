@@ -1,5 +1,5 @@
-import { handleAdmission, handleRollChange } from "@/controllers";
 import { Router } from "express";
+import { handleAdmission, handleRollChange } from "../../controllers";
 
 const router = Router();
 

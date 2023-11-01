@@ -7,11 +7,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
-    "esModuleInterop": true,
-    "baseUrl": "./", // This must be specified if "paths" is specified.
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    "esModuleInterop": true
   },
   "compileOnSave": true,
   "include": ["src"]
