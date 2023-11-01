@@ -12,26 +12,26 @@ const app = express();
 app.post("/add-data", async (req, res) => {
   const {
     name,
-    father_name,
-    mother_name,
-    add_number,
-    add_year,
-    add_class,
-    current_class,
-    section,
+    fatherName,
+    motherName,
+    admissionNo,
+    admissionyear,
+    admissionclass,
+    currentClass,
+    crrentSection,
   } = req.body;
   const aTuringRef = STUDENTS_COLLECTION.doc("aturing");
   try {
     await aTuringRef.set(
       {
         name,
-        father_name,
-        mother_name,
-        add_number,
-        add_year,
-        current_class,
-        add_class,
-        section,
+        fatherName,
+        motherName,
+        admissionNo,
+        admissionyear,
+        currentClass,
+        admissionclass,
+        crrentSection,
       },
       { merge: true }
     );
