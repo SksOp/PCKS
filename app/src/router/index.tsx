@@ -1,5 +1,6 @@
 import React from "react";
 import { Navigate, Outlet, useRoutes } from "react-router-dom";
+import AuthGuard from "src/auth/guard/auth-guard";
 
 export default function Router() {
   return useRoutes([...homePaths]);
@@ -8,7 +9,11 @@ export default function Router() {
 const nested = [
   {
     path: "/nested",
-    element: <Outlet />,
+    element: (
+      <AuthGuard>
+        <Outlet />
+      </AuthGuard>
+    ),
     children: [
       {
         element: <h1>Nested</h1>,
