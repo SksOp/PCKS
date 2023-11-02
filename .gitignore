@@ -8,7 +8,7 @@ firebase-debug.log*
 firebase-debug.*.log*
 
 # package lock from root
-package-lock.json
+/package-lock.json
 
 # lib from /functions
 /functions/lib

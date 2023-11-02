@@ -24,14 +24,17 @@
     "singleProjectMode": true
   },
   "hosting": {
-    "source": "hosting",
+    "public": "app/build",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ],
-    "frameworksBackend": {
-      "region": "asia-east1"
-    }
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   }
 }
