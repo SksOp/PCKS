@@ -12,5 +12,6 @@
     "app/",
     "functions/",
     "packages/*"
-  ]
+  ],
+  "private": true
 }

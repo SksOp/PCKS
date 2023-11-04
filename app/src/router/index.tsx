@@ -3,6 +3,8 @@ import { Navigate, Outlet, useRoutes } from "react-router-dom";
 import AuthGuard from "src/auth/guard/auth-guard";
 import { paths } from "./paths";
 
+const AddStudent = React.lazy(() => import("src/sections/addStudent"));
+
 export default function Router() {
   return useRoutes([...root]);
 }
@@ -21,7 +23,7 @@ const studentPaths = [
     path: paths.dashboard.student.add,
     element: (
       // <AuthGuard>
-      <>Add</>
+      <AddStudent />
       // </AuthGuard>
     ),
   },

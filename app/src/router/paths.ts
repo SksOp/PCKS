@@ -5,7 +5,7 @@ export const paths = {
     student: {
       root: "/dashboard/student",
       profile: "/dashboard/student/profile/:admissionNo",
-      add: "/dashboard/student/add/:admissionNo",
+      add: "/dashboard/student/add",
     },
     result: {
       root: "/dashboard/result",

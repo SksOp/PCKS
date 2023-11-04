@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-
-// ----------------------------------------------------------------------
+import { useSearchParams as defaultUseSearchParams } from "react-router-dom";
 
 export function useRouter() {
   const navigate = useNavigate();
@@ -18,4 +17,9 @@ export function useRouter() {
   );
 
   return router;
+}
+export function useSearchParams() {
+  const [searchParams] = defaultUseSearchParams();
+
+  return useMemo(() => searchParams, [searchParams]);
 }

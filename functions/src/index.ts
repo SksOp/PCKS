@@ -11,11 +11,14 @@ setGlobalOptions({ maxInstances: 10 });
 
 const app = express();
 
-const v1Router = express.Router();
+//v1 is the version of the API
+// its just a normal router
 
-v1Router.use("/student", router.v1.studentRoutes);
-v1Router.use("/result", router.v1.resultRoutes);
+const v1 = express.Router();
 
-app.use("/v1", v1Router);
+v1.use("/student", router.v1.studentRoutes);
+v1.use("/result", router.v1.resultRoutes);
+
+app.use("/v1", v1);
 
 export const api = onRequest(app);

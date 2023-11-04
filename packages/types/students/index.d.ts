@@ -20,7 +20,6 @@ export interface HandleAdmissionRequest {
   currentClass: string;
   currentSection: string;
   currentRoll: number;
-  isRegistered: boolean;
 }
 
 export interface HandleAdmissionResponse {
@@ -41,4 +40,14 @@ export interface HandleStudentUpdateRequest {
 export interface HandleStudentUpdateResponse {
   success: boolean;
   message: string;
+}
+
+export interface GetAdmissionNoAvaibilityRequest {
+  admissionNo: string;
+}
+
+export interface GetAdmissionNoAvaibilityResponse {
+  success: boolean;
+  message: string;
+  isAvailable?: boolean;
 }
