@@ -1,5 +1,11 @@
 import { Request, Response } from "express";
 import { STUDENTS_COLLECTION } from "../../db";
+import {
+  HandleAdmissionRequest,
+  HandleAdmissionResponse,
+  Student,
+} from "types";
+import { logger } from "firebase-functions/v2";
 
 async function handleAdmission(req: Request, res: Response) {
   {
@@ -9,31 +15,45 @@ async function handleAdmission(req: Request, res: Response) {
       motherName,
       admissionNo,
       admissionYear,
-      admissionclass,
+      admissionClass,
       currentClass,
       currentSection,
       currentRoll,
-    } = req.body;
-    const aTuringRef = STUDENTS_COLLECTION.doc(admissionNo);
+    } = req.body as HandleAdmissionRequest;
+
+    const newStudentref = STUDENTS_COLLECTION.doc(admissionNo);
+
     try {
-      await aTuringRef.set(
+      await newStudentref.set(
         {
           name,
           fatherName,
           motherName,
           admissionNo,
           admissionYear,
-          admissionclass,
+          admissionClass,
           currentClass,
           currentSection,
           currentRoll,
         },
         { merge: true }
       );
-      res.status(200).json({ message: "Document updated successfully." });
-    } catch (err) {
-      console.log("Error Created on Updating Document", err);
-      res.status(500).json({ error: err });
+
+      const response: HandleAdmissionResponse = {
+        success: true,
+        message: "Student added successfully",
+      };
+
+      res.status(200).json(response);
+    } catch (e) {
+      logger.error(e);
+
+      const response: HandleAdmissionResponse = {
+        success: false,
+        message: (e as Error)?.message || "Failed to update RollNo",
+      };
+
+      res.status(500).json(response);
     }
   }
 }
