@@ -4,34 +4,17 @@ on:
     branches: [main, dev]
 
 jobs:
-  build_and_deploy_hosting:
+  build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: |
-          cd app
-          npm i
-          npm run build
-          cd ..
+      - name: Install Dependencies
+      - run: npm i
+      - name: Build
+        run: npm run build:app
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only hosting
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
-
-  build_deploy_firebase_functions:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install Packages
-        run: |
-          cd functions
-          npm install
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --only functions
+          args: deploy
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

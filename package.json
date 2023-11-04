@@ -1,7 +1,16 @@
 {
   "scripts": {
-    "server": "cd functions && npm run server",
-    "app": "cd app && npm start",
-    "dev": "echo try using ____S______--K---____S____ npm run server"
-  }
+    "server": "npm run server -w functions",
+    "app": "npm start -w app",
+    "start": "concurrently \"npm run server\" \"npm run app\"",
+    "build:app": "npm run build -w app",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:app": "firebase deploy --only hosting",
+    "deploy": "firebase deploy"
+  },
+  "workspaces": [
+    "app/",
+    "functions/",
+    "packages/*"
+  ]
 }
