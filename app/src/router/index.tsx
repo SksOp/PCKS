@@ -1,43 +1,101 @@
 import React from "react";
 import { Navigate, Outlet, useRoutes } from "react-router-dom";
 import AuthGuard from "src/auth/guard/auth-guard";
+import { paths } from "./paths";
 
 export default function Router() {
-  return useRoutes([...homePaths]);
+  return useRoutes([...root]);
 }
 
-const nested = [
+const studentPaths = [
   {
-    path: "/nested",
+    path: paths.dashboard.student.profile,
+    // no outlet here because no nested routes
     element: (
-      <AuthGuard>
-        <Outlet />
-      </AuthGuard>
+      // <AuthGuard>
+      <>Profile</>
+      // </AuthGuard>
+    ),
+  },
+  {
+    path: paths.dashboard.student.add,
+    element: (
+      // <AuthGuard>
+      <>Add</>
+      // </AuthGuard>
+    ),
+  },
+];
+
+const dashboardPaths = [
+  {
+    path: paths.dashboard.student.root,
+    element: (
+      // <AuthGuard>
+      <Outlet />
+      // </AuthGuard>
     ),
     children: [
       {
-        element: <h1>Nested</h1>,
+        element: <h1>Student</h1>,
+        index: true,
+      },
+      ...studentPaths,
+      //add nested routes here
+    ],
+  },
+  {
+    path: paths.dashboard.result.root,
+    element: (
+      // <AuthGuard>
+      <Outlet />
+      // </AuthGuard>
+    ),
+    children: [
+      {
+        element: <h1>Result</h1>,
         index: true,
       },
 
       //add nested routes here
+    ],
+  },
+];
+
+const dashboard = [
+  {
+    path: paths.dashboard.root,
+    element: (
+      // <AuthGuard>
+      <Outlet />
+      // </AuthGuard>
+    ),
+    children: [
+      {
+        element: <h1>Dashboard</h1>,
+        index: true,
+      },
+
+      ...dashboardPaths,
     ],
   },
   { path: "*", element: <Navigate to="/404" replace /> },
 ];
 
-const homePaths = [
+const root = [
   {
-    path: "/",
+    path: paths.root,
     element: <Outlet />,
     children: [
       {
-        element: <h1>Home</h1>,
+        element: <h1>Root</h1>,
         index: true,
       },
-      //add nested routes here
+      //add dashboard routes here
       //example
-      ...nested,
+      ...dashboard,
     ],
   },
 ];
+
+export * from "./paths";
