@@ -1,3 +1,11 @@
+import {
+  Button,
+  CircularProgress,
+  Container,
+  FormLabel,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -34,8 +42,8 @@ function AdmissionForm() {
     checkAdmissionNo();
   }, [params]);
 
-  const onSubmit = async (input: HandleAdmissionRequest) => {
-    const data = await handleAdmissionRequest(admissionNo as string, input);
+  const onSubmit = async (TextField: HandleAdmissionRequest) => {
+    const data = await handleAdmissionRequest(admissionNo as string, TextField);
     if (!data.success) {
       enqueueSnackbar(data.message, { variant: "error" });
       return;
@@ -45,33 +53,58 @@ function AdmissionForm() {
   };
 
   return (
-    <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-      <label> Name</label>
-      <input type="text" {...register("name", { required: true })} />
-      {errors.name && <span>This field is required</span>}
-      <label> Father Name</label>
-      <input type="text" {...register("fatherName", { required: true })} />
-      {errors.fatherName && <span>This field is required</span>}
-      <label> Mother Name</label>
-      <input type="text" {...register("motherName", { required: true })} />
-      {errors.motherName && <span>This field is required</span>}
-      <label> Admission Year</label>
-      <input type="number" {...register("admissionYear", { required: true })} />
-      {errors.admissionYear && <span>This field is required</span>}
-      <label> Admission Class</label>
-      <input type="text" {...register("admissionClass", { required: true })} />
-      {errors.admissionClass && <span>This field is required</span>}
-      <label> Current Class</label>
-      <input type="text" {...register("currentClass", { required: true })} />
-      {errors.currentClass && <span>This field is required</span>}
-      <label> Current Section</label>
-      <input type="text" {...register("currentSection", { required: true })} />
-      {errors.currentSection && <span>This field is required</span>}
-      <label> Current Roll</label>
-      <input type="number" {...register("currentRoll", { required: true })} />
-      {errors.currentRoll && <span>This field is required</span>}
-      <button type="submit">Submit</button>
-    </form>
+    <Container maxWidth="sm">
+      <Stack component="form" gap={2} onSubmit={handleSubmit(onSubmit)}>
+        <FormLabel> Name</FormLabel>
+        <TextField type="text" {...register("name", { required: true })} />
+        {errors.name && <span>This field is required</span>}
+        <FormLabel> Father Name</FormLabel>
+        <TextField
+          type="text"
+          {...register("fatherName", { required: true })}
+        />
+        {errors.fatherName && <span>This field is required</span>}
+        <FormLabel> Mother Name</FormLabel>
+        <TextField
+          type="text"
+          {...register("motherName", { required: true })}
+        />
+        {errors.motherName && <span>This field is required</span>}
+        <FormLabel> Admission Year</FormLabel>
+        <TextField
+          type="number"
+          {...register("admissionYear", { required: true })}
+        />
+        {errors.admissionYear && <span>This field is required</span>}
+        <FormLabel> Admission Class</FormLabel>
+        <TextField
+          type="text"
+          {...register("admissionClass", { required: true })}
+        />
+        {errors.admissionClass && <span>This field is required</span>}
+        <FormLabel> Current Class</FormLabel>
+        <TextField
+          type="text"
+          {...register("currentClass", { required: true })}
+        />
+        {errors.currentClass && <span>This field is required</span>}
+        <FormLabel> Current Section</FormLabel>
+        <TextField
+          type="text"
+          {...register("currentSection", { required: true })}
+        />
+        {errors.currentSection && <span>This field is required</span>}
+        <FormLabel> Current Roll</FormLabel>
+        <TextField
+          type="number"
+          {...register("currentRoll", { required: true })}
+        />
+        {errors.currentRoll && <span>This field is required</span>}
+        <Button variant="contained" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? <CircularProgress /> : "Submit"}
+        </Button>
+      </Stack>
+    </Container>
   );
 }
 

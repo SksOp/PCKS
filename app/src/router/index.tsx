@@ -4,7 +4,7 @@ import AuthGuard from "src/auth/guard/auth-guard";
 import { paths } from "./paths";
 
 const AddStudent = React.lazy(() => import("src/sections/addStudent"));
-
+const StudentProfile = React.lazy(() => import("src/sections/profile"));
 export default function Router() {
   return useRoutes([...root]);
 }
@@ -15,7 +15,7 @@ const studentPaths = [
     // no outlet here because no nested routes
     element: (
       // <AuthGuard>
-      <>Profile</>
+      <StudentProfile />
       // </AuthGuard>
     ),
   },

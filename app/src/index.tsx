@@ -4,7 +4,11 @@ import { BrowserRouter } from "react-router-dom";
 //
 import App from "./App";
 import React from "react";
+
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
 import "./index.css";
+import theme from "./theme/theme";
 
 // ----------------------------------------------------------------------
 
@@ -14,8 +18,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <BrowserRouter>
-    <Suspense>
-      <App />
-    </Suspense>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Suspense>
+        <App />
+      </Suspense>
+    </ThemeProvider>
   </BrowserRouter>
 );

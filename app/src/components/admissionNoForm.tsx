@@ -1,3 +1,11 @@
+import {
+  Button,
+  CircularProgress,
+  Container,
+  FormLabel,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { useSnackbar } from "notistack";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "src/hooks/router";
@@ -34,11 +42,18 @@ export default function AdmissionNoForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label> Write the Unique Admission Number</label>
-      <input type="text" {...register("admissionNo", { required: true })} />
-      {errors.admissionNo && <span>This field is required</span>}
-      <button type="submit">Submit</button>
-    </form>
+    <Container maxWidth="sm">
+      <Stack component="form" gap={2} onSubmit={handleSubmit(onSubmit)}>
+        <FormLabel> Write the Unique Admission Number</FormLabel>
+        <TextField
+          type="text"
+          {...register("admissionNo", { required: true })}
+        />
+        {errors.admissionNo && <span>This field is required</span>}
+        <Button variant="contained" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? <CircularProgress /> : "Submit"}
+        </Button>
+      </Stack>
+    </Container>
   );
 }

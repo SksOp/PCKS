@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useReducer, useCallback, useMemo } from "react";
-import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
+
 import {
   UserCredential,
   createUserWithEmailAndPassword,
@@ -10,25 +9,14 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import {
-  getFirestore,
-  collection,
-  doc,
-  setDoc,
-  getDoc,
-} from "firebase/firestore";
+
 // config
 import { FIREBASE_API } from "src/config";
 import { ActionMapType, AuthStateType, AuthUserType } from "../types";
 import { AuthContext } from "./auth-context";
-
-export const firebaseApp = initializeApp(FIREBASE_API);
+import { DB, firebaseApp } from "src/firebase";
 
 export const AUTH = getAuth(firebaseApp);
-
-export const DB = getFirestore(firebaseApp);
-
-export const STORAGE = getStorage(firebaseApp);
 
 // ----------------------------------------------------------------------
 
@@ -68,64 +56,6 @@ type Props = {
 export function AuthProvider({ children }: Props) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const initialize = useCallback(() => {
-    try {
-      onAuthStateChanged(AUTH, async (user) => {
-        if (user) {
-          dispatch({
-            type: Types.INITIAL,
-            payload: {
-              user: {
-                ...user,
-                id: user.uid,
-              },
-            },
-          });
-          const userProfile = doc(DB, "users", user.uid);
-          const profileData = doc(DB, "profiles", user.uid);
-
-          const docSnap = await getDoc(userProfile);
-          const profileSnap = await getDoc(profileData);
-
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const profile: any = { ...docSnap.data(), ...profileSnap.data() };
-          dispatch({
-            type: Types.INITIAL,
-            payload: {
-              user: {
-                ...user,
-                ...profile,
-                displayName: `${profile.firstName || ""} ${
-                  profile.lastName || ""
-                }`,
-                id: user.uid,
-              },
-            },
-          });
-        } else {
-          dispatch({
-            type: Types.INITIAL,
-            payload: {
-              user: null,
-            },
-          });
-        }
-      });
-    } catch (error) {
-      console.error(error);
-      dispatch({
-        type: Types.INITIAL,
-        payload: {
-          user: null,
-        },
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    initialize();
-  }, [initialize]);
-
   // LOGIN
   const login = useCallback(
     async (email: string, password: string): Promise<UserCredential> => {
@@ -135,7 +65,7 @@ export function AuthProvider({ children }: Props) {
   );
 
   const refreshUser = useCallback(async () => {
-    await initialize();
+    // await initialize();
   }, []);
 
   // LOGOUT
