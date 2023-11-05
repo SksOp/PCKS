@@ -12,8 +12,8 @@ jobs:
       - name: Recreate App env from github secer
         run: echo "${{ secrets.ENV_APP }}" > app/.env
 
-      - name: Recreate function env from github secer
-        run: echo "${{ secrets.ENV_FUNCTIONS }}" > functions/.env
+      # - name: Recreate function env from github secer
+      #   run: echo "${{ secrets.ENV_FUNCTIONS }}" > functions/.env
 
       - name: Install Dependencies
         run: npm i
