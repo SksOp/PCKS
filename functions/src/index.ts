@@ -5,11 +5,13 @@ import * as logger from "firebase-functions/logger";
 import express from "express";
 import { setGlobalOptions } from "firebase-functions/v2";
 import router from "./routes";
+import cors from "cors";
 
 // Set the maximum instances to 10 for all functions
 setGlobalOptions({ maxInstances: 10 });
 
 const app = express();
+app.use(cors());
 
 //v1 is the version of the API
 // its just a normal router

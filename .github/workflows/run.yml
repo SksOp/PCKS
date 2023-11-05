@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Recreate App env from github secer
+      - name: Recreate App env from github secert
         run: echo "${{ secrets.ENV_APP }}" > app/.env
 
       # - name: Recreate function env from github secer
