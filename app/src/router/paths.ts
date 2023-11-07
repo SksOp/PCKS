@@ -11,4 +11,5 @@ export const paths = {
       root: "/dashboard/result",
     },
   },
+  logout: "/logout",
 };

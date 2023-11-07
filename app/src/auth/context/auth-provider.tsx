@@ -2,19 +2,20 @@
 import { useEffect, useReducer, useCallback, useMemo } from "react";
 
 import {
+  GoogleAuthProvider,
   UserCredential,
-  createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
-  signInWithEmailAndPassword,
+  signInWithPopup,
+  signInWithRedirect,
   signOut,
 } from "firebase/auth";
 
-// config
-import { FIREBASE_API } from "src/config";
 import { ActionMapType, AuthStateType, AuthUserType } from "../types";
 import { AuthContext } from "./auth-context";
-import { DB, firebaseApp } from "src/firebase";
+import { firebaseApp } from "src/firebase";
+import { validateAdmin } from "src/utils/admin";
+import { useSnackbar } from "notistack";
 
 export const AUTH = getAuth(firebaseApp);
 
@@ -55,17 +56,11 @@ type Props = {
 
 export function AuthProvider({ children }: Props) {
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  // LOGIN
-  const login = useCallback(
-    async (email: string, password: string): Promise<UserCredential> => {
-      return signInWithEmailAndPassword(AUTH, email, password); // Ensure this returns a UserCredential.
-    },
-    []
-  );
-
-  const refreshUser = useCallback(async () => {
-    // await initialize();
+  const snackBar = useSnackbar();
+  const loginWithGoogle = useCallback(async () => {
+    const provider = new GoogleAuthProvider();
+    console.log("loginWithGoogle");
+    await signInWithPopup(AUTH, provider);
   }, []);
 
   // LOGOUT
@@ -74,12 +69,47 @@ export function AuthProvider({ children }: Props) {
   }, []);
 
   // ----------------------------------------------------------------------
+  const initialize = useCallback(() => {
+    try {
+      onAuthStateChanged(AUTH, async (user) => {
+        if (user) {
+          const isAdmin = await validateAdmin(user);
+          console.log("isAdmin", isAdmin);
+          if (!isAdmin) {
+            snackBar.enqueueSnackbar("You are not admin", { variant: "error" });
+            await logout();
+            return;
+          }
+          dispatch({
+            type: Types.INITIAL,
+            payload: {
+              user: {
+                ...user,
+                id: user.uid,
+              },
+            },
+          });
+        } else {
+          dispatch({
+            type: Types.INITIAL,
+            payload: {
+              user: null,
+            },
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
-  const checkAuthenticated = state.user?.emailVerified
-    ? "authenticated"
-    : "unauthenticated";
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
 
-  const status = state.loading ? "loading" : checkAuthenticated;
+  const refreshUser = useCallback(async () => {
+    // await initialize();
+  }, []);
 
   const memoizedValue = useMemo(
     () => ({
@@ -88,17 +118,11 @@ export function AuthProvider({ children }: Props) {
       loading: status === "loading",
       authenticated: status === "authenticated",
       unauthenticated: status === "unauthenticated",
-      login,
       logout,
-      refreshUser, // Include the refreshUser function here
+      loginWithGoogle,
+      refreshUser,
     }),
-    [
-      status,
-      state.user,
-      login,
-      logout,
-      refreshUser, // Make sure this is also included in the dependency array if it uses any external state or props
-    ]
+    [loginWithGoogle, status, state.user, logout, refreshUser]
   );
 
   return (
