@@ -1,11 +1,12 @@
 import React from "react";
 import Layout from "src/components/layout";
+import StudentDashBoard from "src/components/studentDashBoard";
 
 function index() {
   return (
     <>
       <Layout>
-        <h1>Students</h1>
+        <StudentDashBoard />
       </Layout>
     </>
   );
