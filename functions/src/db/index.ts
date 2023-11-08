@@ -1,6 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 
-const DB = getFirestore();
+export const DB = getFirestore();
 
 DB.settings({
   ignoreUndefinedProperties: true,
@@ -8,11 +8,13 @@ DB.settings({
 
 const isProduction = process.env.NODE_ENV === "production";
 
-const studentsCollectionRef = isProduction ? "students" : "students-dev";
-export const STUDENTS_COLLECTION = DB.collection(studentsCollectionRef);
+export const studentsCollection = isProduction ? "students" : "students-dev";
+export const STUDENTS_COLLECTION = DB.collection(studentsCollection);
 
-const resultsCollectionRef = isProduction ? "results" : "results-dev";
-export const RESULTS_COLLECTION = DB.collection(resultsCollectionRef);
+export const resultsCollection = isProduction ? "results" : "results-dev";
+export const RESULTS_COLLECTION = DB.collection(resultsCollection);
 
-const managementCollectionRef = isProduction ? "management" : "management-dev";
-export const MANAGEMENT_COLLECTION = DB.collection(managementCollectionRef);
+export const managementCollection = isProduction
+  ? "management"
+  : "management-dev";
+export const MANAGEMENT_COLLECTION = DB.collection(managementCollection);

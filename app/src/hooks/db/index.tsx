@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
+import { getDoc } from "firebase/firestore";
 import React, { useEffect, useMemo, useState } from "react";
-import { useCollection } from "react-firebase-hooks/firestore";
+import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { resultSubCollection } from "src/firebase";
 import { getCurrentBatch } from "src/utils/management";
 
@@ -40,14 +41,28 @@ export function useBatch() {
   }, [currentBatch, canChangeBatch]);
 }
 
-export function useSemester({ batch }: { batch: string }) {
-  console.log("batch", batch);
-  const [value, loading, error] = useCollection(resultSubCollection(batch));
+export function useSemester(batch: string) {
+  const docRefFirst = resultSubCollection(`${batch}/first`);
+  const docRefSec = resultSubCollection(`${batch}/second`);
+  const docRefFour = resultSubCollection(`${batch}/annual`);
+
+  const [firstTerm, loading1] = useCollection(docRefFirst);
+  const [secondTerm, loading2] = useCollection(docRefSec);
+  const [annual, loading3] = useCollection(docRefFour);
+
+  const exist = {
+    isFirstTerm: !firstTerm?.empty,
+    isSecondTerm: !secondTerm?.empty,
+    isannual: !annual?.empty,
+  };
+
   return useMemo(() => {
     return {
-      value,
-      loading,
-      error,
+      loading: loading1 || loading2 || loading3,
+      firstTerm,
+      secondTerm,
+      annual,
+      exist,
     };
-  }, [value, loading, error]);
+  }, [firstTerm, secondTerm, annual]);
 }

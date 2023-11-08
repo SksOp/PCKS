@@ -31,3 +31,12 @@ export interface Result {
   results: Results;
   attendance: Attendance;
 }
+
+export interface CreateTermRequest {
+  term: string;
+}
+
+export interface CreateTermResponse {
+  message: string;
+  success: boolean;
+}

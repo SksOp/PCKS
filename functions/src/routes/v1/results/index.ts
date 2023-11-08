@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { handleResult } from "../../../controllers/v1";
+import controller from "../../../controllers";
 
 const router = Router();
-router.post("/add", handleResult);
+router.post("/create-term", controller.v1.createTerm);
 export default router;

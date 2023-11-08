@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  CreateTermResponse,
   GetAdmissionNoAvaibilityResponse,
   HandleAdmissionRequest,
   HandleAdmissionResponse,
@@ -48,10 +49,21 @@ export function useFirebaseFunctions() {
     return data;
   };
 
+  const handleCreateTerm = async (term: string) => {
+    const URL = `${API}/v1/result/create-term`;
+    console.log(term);
+    const response = await axios.post(URL, {
+      data: { term: term.toLowerCase() },
+    });
+    const data: CreateTermResponse = response.data;
+    return data;
+  };
+
   return {
     getAdmissionNoAvaibility,
     handleAdmissionRequest,
     handleStudentUpdateRequest,
     handleStudentUnregisterRequest,
+    handleCreateTerm,
   };
 }

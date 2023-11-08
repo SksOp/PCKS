@@ -25,6 +25,15 @@ const resultPaths = [
       </AuthGuard>
     ),
   },
+  {
+    path: paths.dashboard.result.batch,
+    // no outlet here because no nested routes
+    element: (
+      <AuthGuard>
+        <StudentProfile />
+      </AuthGuard>
+    ),
+  },
 ];
 const studentPaths = [
   {
