@@ -24,11 +24,11 @@ const pages = [
     path: paths.root,
     auth: true,
   },
-  {
-    name: "Dashboard",
-    path: paths.dashboard.root,
-    auth: true,
-  },
+  // {
+  //   name: "Dashboard",
+  //   path: paths.dashboard.root,
+  //   auth: true,
+  // },
   {
     name: "Students",
     path: paths.dashboard.student.root,
