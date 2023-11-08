@@ -16,6 +16,7 @@ import {
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { classes } from "src/config";
 import { useRouter, useSearchParams } from "src/hooks/router";
 import { useFirebaseFunctions } from "src/hooks/server";
 import { paths } from "src/router";
@@ -102,13 +103,11 @@ function AdmissionForm() {
                 onChange={onChange}
                 {...field}
               >
-                {["Nur.", "L.K.G", "U.K.G", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
-                  (item) => (
-                    <MenuItem key={item} value={item}>
-                      {item}
-                    </MenuItem>
-                  )
-                )}
+                {classes.map((item) => (
+                  <MenuItem key={item} value={item}>
+                    {item}
+                  </MenuItem>
+                ))}
               </Select>
             )}
           />
@@ -132,6 +131,7 @@ function AdmissionForm() {
           <FormLabel> Admission Year</FormLabel>
           <TextField
             type="number"
+            disabled={!isOldStudent}
             {...register("admissionYear", {
               required: true,
               value: Number(new Date().getFullYear()),
@@ -140,13 +140,35 @@ function AdmissionForm() {
           {errors.admissionYear && (
             <ErrorSpan>This field is required</ErrorSpan>
           )}
-          <FormLabel> Current Class</FormLabel>
-          <TextField
-            type="text"
-            placeholder="If empty, will be same as admission class"
-            {...register("currentClass", { required: false })}
-          />
-          {errors.currentClass && <ErrorSpan>This field is required</ErrorSpan>}
+
+          {isOldStudent && (
+            <>
+              <FormLabel> Current Class</FormLabel>
+              <Controller
+                name="currentClass"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value, ...field } }) => (
+                  <Select
+                    id="currentClass"
+                    // value={value === undefined ? "L.K.G" : value} // Ensuring value is never undefined
+                    onChange={onChange}
+                    {...field}
+                  >
+                    {classes.map((item) => (
+                      <MenuItem key={item} value={item}>
+                        {item}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              />
+
+              {errors.admissionClass && (
+                <ErrorSpan>This field is required</ErrorSpan>
+              )}
+            </>
+          )}
           <FormLabel> Phone</FormLabel>
           <TextField type="number" {...register("phone", { required: true })} />
           {errors.phone && <ErrorSpan>This field is required</ErrorSpan>}

@@ -7,3 +7,19 @@ export const FIREBASE_API = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
+
+export const classes = [
+  "Nur.",
+  "L.K.G",
+  "U.K.G",
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+];

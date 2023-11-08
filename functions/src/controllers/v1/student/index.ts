@@ -74,7 +74,9 @@ export async function handleAdmission(req: Request, res: Response) {
 
     try {
       const currentClass =
-        data.currentClass == "" ? data.admissionClass : data.currentClass;
+        data.currentClass ?? data.currentClass == ""
+          ? data.admissionClass
+          : data.currentClass;
       await newStudentref.set(
         { ...data, currentClass, isRegistered: true },
         { merge: true }
