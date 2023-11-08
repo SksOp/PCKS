@@ -225,11 +225,12 @@ function GeneralDetails({ student }: { student: Student }) {
     const response = await handleStudentUnregisterRequest(student.admissionNo);
     if (!response.success) {
       enqueueSnackbar(response.message, { variant: "error" });
+      setLoading(false);
       return;
     }
     enqueueSnackbar(response.message, { variant: "success" });
     setOpenUnregisterDialog(false);
-    // Maybe update the student state or make an API call
+    setLoading(false);
   };
 
   return (
@@ -296,11 +297,11 @@ function GeneralDetails({ student }: { student: Student }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button disabled={!loading} onClick={handleCloseDialog}>
+          <Button disabled={loading} onClick={handleCloseDialog}>
             Cancel
           </Button>
           <Button
-            disabled={!loading}
+            disabled={loading}
             onClick={handleConfirmUnregister}
             autoFocus
             color="error"
