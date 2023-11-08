@@ -2,6 +2,10 @@ import { getFirestore } from "firebase-admin/firestore";
 
 const DB = getFirestore();
 
+DB.settings({
+  ignoreUndefinedProperties: true,
+});
+
 const isProduction = process.env.NODE_ENV === "production";
 
 const studentsCollectionRef = isProduction ? "students" : "students-dev";

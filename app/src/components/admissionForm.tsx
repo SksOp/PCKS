@@ -52,7 +52,7 @@ function AdmissionForm() {
     }
     enqueueSnackbar(data.message, { variant: "success" });
     const url = `${paths.dashboard.student.root}/profile/${data.admissionNo}`;
-    replace(`${paths.dashboard.student.root}/${data.admissionNo}`);
+    replace(url);
   };
 
   return (
@@ -77,14 +77,24 @@ function AdmissionForm() {
 
           {/* Toggle between New Student and Old Student fields */}
           {isOldStudent && (
-            <TextField
-              label="Old Admission Number"
-              type="number"
-              error={!!errors.admissionNo}
-              helperText={errors.admissionNo ? "This field is required" : ""}
-              {...register("admissionNo", { required: true })}
-              fullWidth
-            />
+            <>
+              <TextField
+                label="Old Admission Number"
+                type="number"
+                error={!!errors.admissionNo}
+                helperText={errors.admissionNo ? "This field is required" : ""}
+                {...register("admissionNo", { required: true })}
+                fullWidth
+              />
+              <TextField
+                label="Current Roll No"
+                type="number"
+                error={!!errors.currentRoll}
+                helperText={errors.currentRoll ? "This field is required" : ""}
+                {...register("currentRoll", { required: true })}
+                fullWidth
+              />
+            </>
           )}
           <FormLabel> Name</FormLabel>
           <TextField type="text" {...register("name", { required: true })} />

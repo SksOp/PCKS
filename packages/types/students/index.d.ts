@@ -21,6 +21,7 @@ export interface HandleAdmissionRequest {
   admissionYear: number;
   admissionClass: string;
   currentClass?: string;
+  currentRoll?: number;
   phone: string | number;
   dob: string;
   address: string;
