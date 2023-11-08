@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useState } from "react";
-import { useAuthContext } from "src/hooks/auth/indes";
+import { useAuthContext } from "src/hooks/auth";
 import { useRouter } from "src/hooks/router";
 
 type AuthGuardProps = {

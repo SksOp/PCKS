@@ -9,3 +9,6 @@ export const STUDENTS_COLLECTION = DB.collection(studentsCollectionRef);
 
 const resultsCollectionRef = isProduction ? "results" : "results-dev";
 export const RESULTS_COLLECTION = DB.collection(resultsCollectionRef);
+
+const managementCollectionRef = isProduction ? "management" : "management-dev";
+export const MANAGEMENT_COLLECTION = DB.collection(managementCollectionRef);

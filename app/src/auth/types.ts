@@ -24,7 +24,7 @@ export type AuthStateType = {
 // ----------------------------------------------------------------------
 
 type CanRemove = {
-  login: (email: string, password: string) => Promise<UserCredential>;
+  loginWithGoogle?: () => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -34,6 +34,7 @@ export type FirebaseContextType = CanRemove & {
   authenticated: boolean;
   unauthenticated: boolean;
   refreshUser: () => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
 };
 
 // ----------------------------------------------------------------------

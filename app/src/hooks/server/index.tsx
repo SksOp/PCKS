@@ -3,6 +3,9 @@ import {
   GetAdmissionNoAvaibilityResponse,
   HandleAdmissionRequest,
   HandleAdmissionResponse,
+  HandleStudentUpdateRequest,
+  HandleStudentUpdateResponse,
+  UnregisterStudentResponse,
 } from "types";
 
 const API = process.env.REACT_APP_API;
@@ -22,11 +25,33 @@ export function useFirebaseFunctions() {
     admissionNo: string,
     input: HandleAdmissionRequest
   ) => {
-    const URL = `${API}/v1/student/admission/${admissionNo}`;
+    const URL = `${API}/v1/student/admission/`;
     const response = await axios.post(URL, { data: input });
     const data: HandleAdmissionResponse = response.data;
     return data;
   };
 
-  return { getAdmissionNoAvaibility, handleAdmissionRequest };
+  const handleStudentUpdateRequest = async (
+    admissionNo: string,
+    input: HandleStudentUpdateRequest
+  ) => {
+    const URL = `${API}/v1/student/update/${admissionNo}`;
+    const response = await axios.post(URL, { data: input });
+    const data: HandleStudentUpdateResponse = response.data;
+    return data;
+  };
+
+  const handleStudentUnregisterRequest = async (admissionNo: string) => {
+    const URL = `${API}/v1/student/unregister/${admissionNo}`;
+    const response = await axios.delete(URL);
+    const data: UnregisterStudentResponse = response.data;
+    return data;
+  };
+
+  return {
+    getAdmissionNoAvaibility,
+    handleAdmissionRequest,
+    handleStudentUpdateRequest,
+    handleStudentUnregisterRequest,
+  };
 }
