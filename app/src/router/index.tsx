@@ -10,18 +10,30 @@ const Result = React.lazy(() => import("src/sections/result"));
 const Student = React.lazy(() => import("src/sections/student"));
 const Dashboard = React.lazy(() => import("src/sections/dashboard"));
 const LogOut = React.lazy(() => import("src/sections/logout"));
+
 export default function Router() {
   return useRoutes([...root]);
 }
 
+const resultPaths = [
+  {
+    path: paths.dashboard.result.view,
+    // no outlet here because no nested routes
+    element: (
+      <AuthGuard>
+        <StudentProfile />
+      </AuthGuard>
+    ),
+  },
+];
 const studentPaths = [
   {
     path: paths.dashboard.student.profile,
     // no outlet here because no nested routes
     element: (
-      // <AuthGuard>
-      <StudentProfile />
-      // </AuthGuard>
+      <AuthGuard>
+        <StudentProfile />
+      </AuthGuard>
     ),
   },
   {
@@ -71,7 +83,7 @@ const dashboardPaths = [
         ),
         index: true,
       },
-
+      ...resultPaths,
       //add nested routes here
     ],
   },

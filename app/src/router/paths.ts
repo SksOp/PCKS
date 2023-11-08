@@ -9,6 +9,7 @@ export const paths = {
     },
     result: {
       root: "/dashboard/result",
+      view: "/dashboard/result/view",
     },
   },
   logout: "/logout",

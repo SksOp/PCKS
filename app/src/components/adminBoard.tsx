@@ -9,6 +9,7 @@ import {
   CardActions,
   Grid,
   Stack,
+  Skeleton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { paths } from "src/router";
@@ -18,27 +19,13 @@ import dayjs from "dayjs";
 import { getCurrentBatch } from "src/utils/management";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { useSnackbar } from "notistack";
+import { useBatch } from "src/hooks/db";
 
 function AdminBoard() {
   const navigate = useNavigate();
-  const [currentBatch, setCurrentBatch] = useState(null);
-  const [canChangeBatch, setCanChangeBatch] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
-  useEffect(() => {
-    async function fetchBatch() {
-      const batch = await getCurrentBatch();
-      setCurrentBatch(batch);
-      const month = dayjs().month();
-      // January is 0 in dayjs, so March is 2 and April is 3
-      if (month === 2 || month === 3) {
-        setCanChangeBatch(true);
-      }
-    }
-
-    fetchBatch();
-  }, []);
-
+  const { currentBatch, canChangeBatch, loading, error } = useBatch();
   const goToManageStudents = () => {
     navigate(paths.dashboard.student.root);
   };
@@ -67,6 +54,16 @@ function AdminBoard() {
             Welcome to the administration panel. Here you can oversee and manage
             critical aspects of the educational process.
           </Typography>
+
+          {loading && (
+            <Skeleton variant="rectangular" width="100%" height={118} />
+          )}
+
+          {!loading && error && (
+            <Typography variant="body1" gutterBottom>
+              Error loading batch information
+            </Typography>
+          )}
 
           {currentBatch && (
             <Box sx={{ my: 2, display: "flex", alignItems: "center" }}>

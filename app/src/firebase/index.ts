@@ -23,3 +23,7 @@ export const MANAGEMENT_COLLECTION = isDev ? "management-dev" : "management";
 export const studentsCollection = collection(DB, STUDENTS_COLLECTION);
 export const resultsCollection = collection(DB, RESULTS_COLLECTION);
 export const managementCollection = collection(DB, MANAGEMENT_COLLECTION);
+
+export const resultSubCollection = (path: string) => {
+  return collection(DB, `${RESULTS_COLLECTION}/${path}`);
+};
