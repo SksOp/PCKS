@@ -26,7 +26,7 @@ export interface Attendance {
   outOf: number;
 }
 
-export interface Data {
+export interface Result {
   student: Student;
   results: Results;
   attendance: Attendance;
