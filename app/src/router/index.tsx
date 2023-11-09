@@ -10,6 +10,7 @@ const Result = React.lazy(() => import("src/sections/result"));
 const Student = React.lazy(() => import("src/sections/student"));
 const Dashboard = React.lazy(() => import("src/sections/dashboard"));
 const LogOut = React.lazy(() => import("src/sections/logout"));
+const ResultBatch = React.lazy(() => import("src/sections/resultBatch"));
 
 export default function Router() {
   return useRoutes([...root]);
@@ -30,7 +31,7 @@ const resultPaths = [
     // no outlet here because no nested routes
     element: (
       <AuthGuard>
-        <StudentProfile />
+        <ResultBatch />
       </AuthGuard>
     ),
   },

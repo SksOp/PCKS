@@ -51,7 +51,7 @@ function ResultDashBoard() {
   };
 
   const handleShowResult = (term: string) => {
-    navigate(`/dashboard/result/${currentBatch}?term=${term}`);
+    navigate(`/dashboard/result/batch/${currentBatch}?term=${term}`);
   };
 
   const createResult = async (term: string) => {

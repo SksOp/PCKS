@@ -9,7 +9,7 @@ export const paths = {
     },
     result: {
       root: "/dashboard/result",
-      batch: "/dashboard/result/:batch",
+      batch: "/dashboard/result/batch/:batch",
       view: "/dashboard/result/view",
     },
   },
