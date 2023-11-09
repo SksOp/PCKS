@@ -1,7 +1,13 @@
 import { Request, Response } from "express";
 import { getManagementData } from "../../../utils/management";
 import { DB, STUDENTS_COLLECTION, resultsCollection } from "../../../db";
-import { CreateTermRequest, CreateTermResponse, Result, Student } from "types";
+import {
+  CreateResultRequest,
+  CreateTermRequest,
+  CreateTermResponse,
+  Result,
+  Student,
+} from "types";
 import { FirebaseError } from "firebase-admin";
 import { createEmptyResultBasedOnClass } from "../../../utils/result";
 
@@ -67,6 +73,7 @@ export async function createTerm(req: Request, res: Response) {
           present: 0,
           outOf: 0,
         },
+        isCompleted: false,
       };
       batch.set(studentRef, data);
     });
@@ -80,6 +87,36 @@ export async function createTerm(req: Request, res: Response) {
   } catch (error: FirebaseError | any) {
     return res.status(500).send({
       message: error.message || "Failed to create term",
+      success: false,
+    });
+  }
+}
+
+export async function createResult(req: Request, res: Response) {
+  const data = req.body.data as CreateResultRequest;
+  const { term, batch, admissionNo, attendance, subjects } = data;
+  console.log(data);
+  const path = `${resultsCollection}/${batch}/${term}/${admissionNo}`;
+  const studentRef = DB.doc(path);
+  try {
+    await studentRef.set(
+      {
+        results: {
+          subjects,
+        },
+        attendance,
+        isCompleted: true,
+      },
+      { merge: true }
+    );
+
+    return res.status(200).send({
+      message: "Result created successfully",
+      success: true,
+    });
+  } catch (error: FirebaseError | any) {
+    return res.status(500).send({
+      message: error.message || "Failed to create result",
       success: false,
     });
   }

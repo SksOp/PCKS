@@ -234,15 +234,13 @@ function GeneralDetails({ student }: { student: Student }) {
   };
 
   return (
-    <Paper elevation={2} sx={{ p: 2, border: "1px solid #e0e0e0" }}>
+    <>
       <Table aria-label="student details">
         <TableBody>
           <TableRow>
             <TableCell variant="head">Student Profile</TableCell>
             <TableCell>
-              <Typography variant="h4" component="h1">
-                {student.name}
-              </Typography>
+              <Typography fontWeight={600}>{student.name}</Typography>
             </TableCell>
           </TableRow>
           <TableRow>
@@ -261,14 +259,13 @@ function GeneralDetails({ student }: { student: Student }) {
             <TableCell>Status</TableCell>
             <TableCell>
               {student.isRegistered ? (
-                <Stack direction="row" alignItems="center">
+                <Stack direction="row" flexWrap="wrap" gap={2} alignItems="center">
                   <CheckCircleIcon color="success" />
                   <Typography display="inline">Registered</Typography>
                   <Button
                     variant="outlined"
                     color="error"
                     onClick={handleUnregisterClick}
-                    sx={{ ml: 2 }}
                   >
                     Unregister
                   </Button>
@@ -310,6 +307,6 @@ function GeneralDetails({ student }: { student: Student }) {
           </Button>
         </DialogActions>
       </Dialog>
-    </Paper>
+    </>
   );
 }

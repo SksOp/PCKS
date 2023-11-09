@@ -41,3 +41,16 @@ export interface CreateTermResponse {
   message: string;
   success: boolean;
 }
+
+export interface CreateResultRequest {
+  subjects: Subject[];
+  term: string;
+  batch: string;
+  admissionNo: string;
+  attendance: Attendance;
+}
+
+export interface CreateResultResponse {
+  message: string;
+  success: boolean;
+}
