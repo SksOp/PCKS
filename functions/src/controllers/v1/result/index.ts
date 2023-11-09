@@ -95,7 +95,6 @@ export async function createTerm(req: Request, res: Response) {
 export async function createResult(req: Request, res: Response) {
   const data = req.body.data as CreateResultRequest;
   const { term, batch, admissionNo, attendance, subjects } = data;
-  console.log(data);
   const path = `${resultsCollection}/${batch}/${term}/${admissionNo}`;
   const studentRef = DB.doc(path);
   try {

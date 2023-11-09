@@ -36,7 +36,6 @@ function Index() {
       </Layout>
     );
   }
-  console.log(data);
   return (
     <Layout>
       {" "}

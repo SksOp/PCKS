@@ -13,7 +13,6 @@ import { bookAdmissionNo } from "../../../utils/management";
 
 export async function getAdmissionNoAvaibility(req: Request, res: Response) {
   const admissionNo = req.params.admissionNo as string;
-  console.log(admissionNo);
   try {
     const isPresent = await STUDENTS_COLLECTION.doc(admissionNo).get();
     const response: GetAdmissionNoAvaibilityResponse = {
@@ -42,7 +41,6 @@ export async function handleAdmission(req: Request, res: Response) {
   {
     const data = req.body.data as HandleAdmissionRequest;
     const admissionNo = data.admissionNo ?? (await bookAdmissionNo());
-    console.log(admissionNo);
     if (!admissionNo) {
       const response: HandleAdmissionResponse = {
         success: false,
@@ -73,7 +71,6 @@ export async function handleAdmission(req: Request, res: Response) {
     }
 
     try {
-      console.log(data);
       const currentClass =
         data.currentClass == "" || !data.currentClass
           ? data.admissionClass

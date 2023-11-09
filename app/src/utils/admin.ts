@@ -14,6 +14,5 @@ export async function validateAdmin(user: User) {
   if (!userEmail) {
     return false;
   }
-  console.log(allowedEmails, userEmail);
   return allowedEmails.includes(userEmail);
 }

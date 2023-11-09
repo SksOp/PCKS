@@ -65,7 +65,6 @@ function ResultEditor({ resultDoc }: { resultDoc: Result }) {
     enqueueSnackbar(response.message, { variant: "success" });
   };
 
-  // console.log(resultDoc);
 
   return (
     <Container maxWidth="sm">

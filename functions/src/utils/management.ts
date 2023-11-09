@@ -3,9 +3,7 @@ import { MANAGEMENT_COLLECTION } from "../db";
 
 export const initiateManagement = async () => {
   const managementDoc = await MANAGEMENT_COLLECTION.doc("management").get();
-  console.log(managementDoc.exists);
   if (!managementDoc.exists) {
-    console.log("initiating management");
     await MANAGEMENT_COLLECTION.doc("management").set({
       currentAdmissionNo: 1,
       currentBatch: dayjs().year(),

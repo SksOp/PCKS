@@ -59,7 +59,6 @@ export function AuthProvider({ children }: Props) {
   const snackBar = useSnackbar();
   const loginWithGoogle = useCallback(async () => {
     const provider = new GoogleAuthProvider();
-    console.log("loginWithGoogle");
     await signInWithPopup(AUTH, provider);
   }, []);
 
@@ -74,7 +73,6 @@ export function AuthProvider({ children }: Props) {
       onAuthStateChanged(AUTH, async (user) => {
         if (user) {
           const isAdmin = await validateAdmin(user);
-          console.log("isAdmin", isAdmin);
           if (!isAdmin) {
             snackBar.enqueueSnackbar("You are not admin", { variant: "error" });
             await logout();

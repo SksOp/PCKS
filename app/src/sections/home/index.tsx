@@ -6,7 +6,6 @@ import { useAuthContext } from "src/hooks/auth";
 
 function index() {
   const context = useAuthContext();
-  console.log(context);
   return (
     <>
       <Layout>

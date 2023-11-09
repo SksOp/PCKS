@@ -52,7 +52,6 @@ export function useFirebaseFunctions() {
 
   const handleCreateTerm = async (term: string) => {
     const URL = `${API}/v1/result/create-term`;
-    console.log(term);
     const response = await axios.post(URL, {
       data: { term: term.toLowerCase() },
     });

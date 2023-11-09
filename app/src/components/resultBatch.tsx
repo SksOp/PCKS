@@ -32,7 +32,6 @@ interface Props {
 }
 function ResultBatch({ batch, term }: Props) {
   const collectionPath = `${RESULTS_COLLECTION}/${batch}/${term.toLowerCase()}`;
-  console.log(collectionPath);
   const collectionRef = collection(DB, collectionPath);
   const [value, loading, error] = useCollection(collectionRef);
   if (loading) return <LinearProgress />;
