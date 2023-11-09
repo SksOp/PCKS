@@ -19,11 +19,14 @@ import { useBatch, useSemester } from "src/hooks/db";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import { useFirebaseFunctions } from "src/hooks/server";
+import { useSearchParams } from "src/hooks/router";
+import { paths } from "src/router";
 
 function ResultDashBoard() {
   const { currentBatch, loading: batchLoading } = useBatch();
   const { exist, loading } = useSemester(String(currentBatch));
   const { enqueueSnackbar } = useSnackbar();
+  const params = useSearchParams();
   const navigate = useNavigate();
   const { handleCreateTerm } = useFirebaseFunctions();
   const [proCessingHandleCreateTerm, setProcessingHandleCreateTerm] =
@@ -51,7 +54,9 @@ function ResultDashBoard() {
   };
 
   const handleShowResult = (term: string) => {
-    navigate(`/dashboard/result/batch/${currentBatch}?term=${term}`);
+    params.set("term", term);
+    params.set("batch", String(currentBatch));
+    navigate(`${paths.dashboard.result.batch}?${params.toString()}`);
   };
 
   const createResult = async (term: string) => {

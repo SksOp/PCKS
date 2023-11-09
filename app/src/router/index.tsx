@@ -11,6 +11,7 @@ const Student = React.lazy(() => import("src/sections/student"));
 const Dashboard = React.lazy(() => import("src/sections/dashboard"));
 const LogOut = React.lazy(() => import("src/sections/logout"));
 const ResultBatch = React.lazy(() => import("src/sections/resultBatch"));
+const AddResult = React.lazy(() => import("src/sections/addResult"));
 
 export default function Router() {
   return useRoutes([...root]);
@@ -35,6 +36,14 @@ const resultPaths = [
       </AuthGuard>
     ),
   },
+  {
+    path: paths.dashboard.result.add,
+    element: (
+      <AuthGuard>
+        <AddResult />
+      </AuthGuard>
+    ),
+  },
 ];
 const studentPaths = [
   {
@@ -49,9 +58,9 @@ const studentPaths = [
   {
     path: paths.dashboard.student.add,
     element: (
-      // <AuthGuard>
-      <AddStudent />
-      // </AuthGuard>
+      <AuthGuard>
+        <AddStudent />
+      </AuthGuard>
     ),
   },
 ];
@@ -60,16 +69,16 @@ const dashboardPaths = [
   {
     path: paths.dashboard.student.root,
     element: (
-      // <AuthGuard>
-      <Outlet />
-      // </AuthGuard>
+      <AuthGuard>
+        <Outlet />
+      </AuthGuard>
     ),
     children: [
       {
         element: (
-          // <AuthGuard>
-          <Student />
-          // </AuthGuard>
+          <AuthGuard>
+            <Student />
+          </AuthGuard>
         ),
         index: true,
       },
@@ -80,16 +89,16 @@ const dashboardPaths = [
   {
     path: paths.dashboard.result.root,
     element: (
-      // <AuthGuard>
-      <Outlet />
-      // </AuthGuard>
+      <AuthGuard>
+        <Outlet />
+      </AuthGuard>
     ),
     children: [
       {
         element: (
-          // <AuthGuard>
-          <Result />
-          // </AuthGuard>
+          <AuthGuard>
+            <Result />
+          </AuthGuard>
         ),
         index: true,
       },
@@ -103,16 +112,16 @@ const dashboard = [
   {
     path: paths.dashboard.root,
     element: (
-      // <AuthGuard>
-      <Outlet />
-      // </AuthGuard>
+      <AuthGuard>
+        <Outlet />
+      </AuthGuard>
     ),
     children: [
       {
         element: (
-          // <AuthGuard>
-          <Dashboard />
-          // </AuthGuard>
+          <AuthGuard>
+            <Dashboard />
+          </AuthGuard>
         ),
         index: true,
       },

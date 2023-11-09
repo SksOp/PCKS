@@ -9,13 +9,13 @@ type AuthGuardProps = {
 export default function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter();
 
-  const { user } = useAuthContext();
+  const { user, loading } = useAuthContext();
 
   const [checked, setChecked] = useState(false);
 
   const check = useCallback(() => {
-    if (!user) {
-      router.replace("/");
+    if (!user && !loading) {
+      router.push("/");
     } else {
       setChecked(true);
     }

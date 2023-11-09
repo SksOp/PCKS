@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { getManagementData } from "../../../utils/management";
 import { DB, STUDENTS_COLLECTION, resultsCollection } from "../../../db";
-import { CreateTermRequest, CreateTermResponse, Student } from "types";
+import { CreateTermRequest, CreateTermResponse, Result, Student } from "types";
 import { FirebaseError } from "firebase-admin";
+import { createEmptyResultBasedOnClass } from "../../../utils/result";
 
 export async function createTerm(req: Request, res: Response) {
   const data = req.body.data as CreateTermRequest;
@@ -52,12 +53,22 @@ export async function createTerm(req: Request, res: Response) {
       const studentRef = DB.doc(
         `${resultsCollection}/${currentBatch}/${term}/${student.admissionNo}`
       );
-      batch.set(studentRef, {
+      const { currentClass } = student;
+      const data: Result = {
         student: student,
-        results: null,
-        term: term,
-        attendance: null,
-      });
+        results: {
+          meta: {
+            term: term,
+            year: currentBatch,
+          },
+          subjects: createEmptyResultBasedOnClass(currentClass),
+        },
+        attendance: {
+          present: 0,
+          outOf: 0,
+        },
+      };
+      batch.set(studentRef, data);
     });
     // commit the batch
     await batch.commit();

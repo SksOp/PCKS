@@ -9,8 +9,9 @@ export const paths = {
     },
     result: {
       root: "/dashboard/result",
-      batch: "/dashboard/result/batch/:batch",
+      batch: "/dashboard/result/batch/",
       view: "/dashboard/result/view",
+      add: "/dashboard/result/add",
     },
   },
   logout: "/logout",

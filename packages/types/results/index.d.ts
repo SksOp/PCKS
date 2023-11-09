@@ -7,8 +7,8 @@ export interface ResultMeta {
 
 export interface SubjectResult {
   fullMarks: number;
-  theory: number;
-  other: number;
+  theory: number | null;
+  other: number | null;
 }
 
 export interface Subject {
@@ -30,6 +30,7 @@ export interface Result {
   student: Student;
   results: Results;
   attendance: Attendance;
+  isCompleted?: boolean;
 }
 
 export interface CreateTermRequest {

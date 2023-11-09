@@ -7,10 +7,9 @@ import { useSearchParams } from "src/hooks/router";
 import { paths } from "src/router";
 
 function index() {
-  const { batch } = useParams<{ batch: string }>();
   const params = useSearchParams();
   const term = params.get("term");
-  const navigate = useNavigate();
+  const batch = params.get("batch");
   if (!batch || !term) {
     return null;
   }
