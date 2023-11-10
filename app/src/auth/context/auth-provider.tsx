@@ -19,8 +19,6 @@ import { useSnackbar } from "notistack";
 
 export const AUTH = getAuth(firebaseApp);
 
-// ----------------------------------------------------------------------
-
 enum Types {
   INITIAL = "INITIAL",
 }
@@ -98,8 +96,14 @@ export function AuthProvider({ children }: Props) {
       });
     } catch (error) {
       console.log(error);
+      dispatch({
+        type: Types.INITIAL,
+        payload: {
+          user: null,
+        },
+      });
     }
-  }, []);
+  }, [snackBar, logout]);
 
   useEffect(() => {
     initialize();
