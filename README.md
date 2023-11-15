@@ -25,5 +25,4 @@ For now we do not have any CI/CD pipeline. So, we have to deploy manually.
 
 ## Tasks
 
-- [ ] Add CI/CD pipeline
-- [ ] Look if we can also add a react app in this same repo and configure hosting for that too.
+- [ ] redirect bk to the result dashboard page after submitting the result form.

@@ -94,6 +94,11 @@ const RenderStudentCard = ({
     param.set("admissionNo", admissionNo);
     navigate(`${paths.dashboard.result.add}?${param.toString()}`);
   };
+
+  const handleViewClick = (admissionNo: string) => {
+    param.set("admissionNo", admissionNo);
+    navigate(`${paths.dashboard.result.view}?${param.toString()}`);
+  };
   return (
     <Card sx={{ display: "inline-block", width: 250, margin: 2, p: 3 }}>
       <Box
@@ -128,6 +133,15 @@ const RenderStudentCard = ({
         >
           Edit
         </Button>
+        {isCompleted && (
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={() => handleViewClick(student.admissionNo)}
+          >
+            View
+          </Button>
+        )}
       </CardActions>
     </Card>
   );

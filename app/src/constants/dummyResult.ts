@@ -1,5 +1,5 @@
 import { Result } from "types";
-const dummyResultData: Result = {
+export const dummyResultData: Result = {
   student: {
     name: "John Doe",
     currentRoll: 1,
@@ -17,7 +17,7 @@ const dummyResultData: Result = {
   },
   results: {
     meta: {
-      term: "First term",
+      term: "First",
       year: "2023-2024",
     },
     subjects: [
