@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World!</title>
+    <link rel="stylesheet" href="index.css" />
+    <!-- add icon -->
+    <link rel="icon" href="assets/icon.png" type="image/png" />
+    <!-- js -->
+    <script defer src="render.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img src="assets/logo512.png" alt="icon" class="logo" />
+      </div>
+
+      <form onsubmit="download()" class="download-form">
+        <div class="form-group">
+          <label for="year">Year:</label>
+          <input
+            type="number"
+            id="year"
+            name="year"
+            placeholder="Year"
+            class="form-control"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="semester">Semester:</label>
+          <select id="semester" name="semester" class="form-control">
+            <option value="first">First</option>
+            <option value="annual">Annual</option>
+            <option value="second">Second</option>
+          </select>
+        </div>
+
+        <button type="submit" class="submit-btn">Download</button>
+      </form>
+    </div>
+  </body>
+</html>

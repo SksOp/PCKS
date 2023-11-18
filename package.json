@@ -1,7 +1,8 @@
 {
   "scripts": {
-    "server": "npm run server -w functions",
-    "app": "npm start -w app",
+    "start:server": "npm run server -w functions",
+    "start:web": "npm start -w app",
+    "start:app": "npm start -w desktop",
     "start": "concurrently \"npm run server\" \"npm run app\"",
     "build:app": "CI=false npm run build -w app",
     "deploy:functions": "firebase deploy --only functions",
@@ -11,7 +12,8 @@
   "workspaces": [
     "app/",
     "functions/",
-    "packages/*"
+    "packages/*",
+    "desktop/"
   ],
   "private": true
 }
