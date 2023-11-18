@@ -21,45 +21,49 @@ export function ResultView({ data }: { data: Result }) {
     return (
       <Box
         sx={{
-          bgcolor: "slate.100",
-          border: 1,
-          borderColor: "black",
+          backgroundColor: "slate.100",
+          //   border: 1,
+          //   borderColor: "black",
           p: 2,
           textTransform: "uppercase",
         }}
       >
-        <Typography variant="h6">Student Information</Typography>
         <MetaDataHolder label="Name" value={studentData.name} />
-        <MetaDataHolder
-          label="Class"
-          value={`${studentData.currentClass} - Section: ${studentData.currentSection}`}
-        />
+        <MetaDataHolder label="Class" value={studentData.currentClass} />
         <MetaDataHolder
           label="Roll Number"
           value={String(studentData.currentRoll)}
         />
         <MetaDataHolder label="Admission No" value={studentData.admissionNo} />
+        <MetaDataHolder label="Father's Name" value={studentData.fatherName} />
+        <MetaDataHolder label="Mother's Name" value={studentData.motherName} />
       </Box>
     );
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
       <Header data={data} />
 
       <StudentData />
 
-      <Typography variant="h6" gutterBottom>
-        Academic Results
-      </Typography>
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>Subject</TableCell>
-              <TableCell align="right">Theory Marks</TableCell>
-              <TableCell align="right">Full Marks</TableCell>
-              <TableCell align="right">Other Marks</TableCell>
+              <TableCell align="center" colSpan={2}>
+                Obtained Marks
+              </TableCell>
+              <TableCell align="center">Full Marks</TableCell>
+              <TableCell align="center">Total</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell />
+              <TableCell align="center">Theory</TableCell>
+              <TableCell align="center">Other</TableCell>
+              <TableCell />
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -68,9 +72,20 @@ export function ResultView({ data }: { data: Result }) {
                 <TableCell component="th" scope="row">
                   {subject.subjectName}
                 </TableCell>
-                <TableCell align="right">{subject.results.theory}</TableCell>
-                <TableCell align="right">{subject.results.fullMarks}</TableCell>
-                <TableCell align="right">{subject.results.other}</TableCell>
+                <TableCell align="center">{subject.results.theory}</TableCell>
+                <TableCell align="center">{subject.results.other}</TableCell>
+                <TableCell align="center">
+                  {subject.results.fullMarks}
+                </TableCell>
+                <TableCell align="center">
+                  {subject.results.theory &&
+                    subject.results.other &&
+                    Number(subject.results.theory) +
+                      Number(subject.results.other)}
+                  {!(subject.results.theory && subject.results.other) && (
+                    <>N/A</>
+                  )}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -95,7 +110,7 @@ function Header({ data }: { data: Result }) {
   return (
     <Box
       sx={{
-        width: "90%",
+        width: "95%",
         mx: "auto",
         display: "flex",
         alignItems: "stretch",
@@ -112,7 +127,7 @@ function Header({ data }: { data: Result }) {
           textAlign: "center",
         }}
       >
-        <Typography variant="h3" sx={{ fontWeight: "bold" }}>
+        <Typography variant="h4" sx={{ fontWeight: "bold", fontSize: "2rem" }}>
           Prem Chandra Kids School
         </Typography>
         <Typography variant="body1" sx={{ fontWeight: "bold" }}>

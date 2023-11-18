@@ -36,7 +36,7 @@ function index() {
       </Layout>
     );
   }
-  return <ResultView data={dummyResultData} />;
+  return <ResultView data={data} />;
 }
 
 export default index;
