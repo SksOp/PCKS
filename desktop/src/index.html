@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Hello World!</title>
+    <title>Prem Chandra Kids School Result Download</title>
     <link rel="stylesheet" href="index.css" />
     <!-- add icon -->
     <link rel="icon" href="assets/icon.png" type="image/png" />
@@ -15,29 +15,42 @@
         <img src="assets/logo512.png" alt="icon" class="logo" />
       </div>
 
-      <form onsubmit="download()" class="download-form">
+      <form onsubmit="download(event)" class="download-form">
         <div class="form-group">
           <label for="year">Year:</label>
           <input
             type="number"
-            id="year"
-            name="year"
-            placeholder="Year"
+            id="batch"
+            value="2023"
+            name="batch"
+            placeholder="Batch"
             class="form-control"
           />
         </div>
 
         <div class="form-group">
-          <label for="semester">Semester:</label>
-          <select id="semester" name="semester" class="form-control">
+          <label for="term">Term:</label>
+          <select id="term" name="term" class="form-control">
             <option value="first">First</option>
             <option value="annual">Annual</option>
             <option value="second">Second</option>
           </select>
         </div>
 
-        <button type="submit" class="submit-btn">Download</button>
+        <button type="submit" id="submitBtn" class="submit-btn">
+          Download
+        </button>
       </form>
+
+      <div id="infoModal" class="modal">
+        <div class="modal-content">
+          <h4>Processing...</h4>
+          <p id="progressText">Getting admission numbers...</p>
+          <div class="progress">
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

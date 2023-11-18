@@ -1,11 +1,11 @@
 {
   "name": "desktop",
-  "productName": "desktop",
+  "productName": "PCKS Result",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Prem Chandra Kids School",
   "main": "src/index.js",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "cross-env NODE_ENV=development electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
@@ -18,7 +18,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "firebase-admin": "^11.11.0",
+    "pdf-lib": "^1.17.1",
+    "puppeteer": "^21.5.2"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.1.0",
