@@ -3,7 +3,7 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell,
+  TableCell as MuiTableCell,
   TableContainer,
   TableHead,
   TableRow,
@@ -11,8 +11,15 @@ import {
   Box,
   Container,
   Grid,
+  styled,
+  LinearProgress,
 } from "@mui/material";
-import { Result } from "types";
+import { Result, Subject } from "types";
+import { calculateGrade } from "src/utils/result";
+
+const TableCell = styled(MuiTableCell)({
+  padding: "6px",
+});
 
 export function ResultView({ data }: { data: Result }) {
   const StudentData = () => {
@@ -42,62 +49,12 @@ export function ResultView({ data }: { data: Result }) {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ p: "10px" }}>
       <Header data={data} />
-
       <StudentData />
-
-      <TableContainer component={Paper}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Subject</TableCell>
-              <TableCell align="center" colSpan={2}>
-                Obtained Marks
-              </TableCell>
-              <TableCell align="center">Full Marks</TableCell>
-              <TableCell align="center">Total</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell />
-              <TableCell align="center">Theory</TableCell>
-              <TableCell align="center">Other</TableCell>
-              <TableCell />
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.results.subjects.map((subject) => (
-              <TableRow key={subject.subjectName}>
-                <TableCell component="th" scope="row">
-                  {subject.subjectName}
-                </TableCell>
-                <TableCell align="center">{subject.results.theory}</TableCell>
-                <TableCell align="center">{subject.results.other}</TableCell>
-                <TableCell align="center">
-                  {subject.results.fullMarks}
-                </TableCell>
-                <TableCell align="center">
-                  {subject.results.theory &&
-                    subject.results.other &&
-                    Number(subject.results.theory) +
-                      Number(subject.results.other)}
-                  {!(subject.results.theory && subject.results.other) && (
-                    <>N/A</>
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      <Typography variant="h6" gutterBottom>
-        Attendance
-      </Typography>
-      <p>
-        Present: {data.attendance.present} / {data.attendance.outOf}
-      </p>
+      <StudentResultTable subjects={data.results.subjects} />
+      <AttendanceComponent attendanceData={data.attendance} />
+      <GradeInformation />
     </Container>
   );
 }
@@ -160,3 +117,142 @@ const MetaDataHolder = ({
     </Grid>
   </Grid>
 );
+
+interface StudentResultTableProps {
+  subjects: Subject[];
+}
+const StudentResultTable = ({ subjects }: StudentResultTableProps) => {
+  const totalMarks = subjects.reduce(
+    (acc, subject) =>
+      acc + Number(subject.results.theory) + Number(subject.results.other),
+    0
+  );
+  const totalFullMarks = subjects.reduce(
+    (acc, subject) => acc + subject.results.fullMarks,
+    0
+  );
+  const overallPercentage = (totalMarks / totalFullMarks) * 100;
+
+  return (
+    <>
+      <TableContainer component={Paper}>
+        <Table aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Subject</TableCell>
+              <TableCell align="center" colSpan={2}>
+                Obtained Marks
+              </TableCell>
+              <TableCell align="center">Full Marks</TableCell>
+              <TableCell align="center">Total</TableCell>
+              <TableCell align="center">Grade</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell />
+              <TableCell align="center">Theory</TableCell>
+              <TableCell align="center">Other</TableCell>
+              <TableCell />
+              <TableCell />
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {subjects.map((subject) => {
+              const totalSubjectMarks =
+                Number(subject.results.theory) + Number(subject.results.other);
+              return (
+                <TableRow key={subject.subjectName}>
+                  <TableCell component="th" scope="row">
+                    {subject.subjectName}
+                  </TableCell>
+                  <TableCell align="center">{subject.results.theory}</TableCell>
+                  <TableCell align="center">{subject.results.other}</TableCell>
+                  <TableCell align="center">
+                    {subject.results.fullMarks}
+                  </TableCell>
+                  <TableCell align="center">{totalSubjectMarks}</TableCell>
+                  <TableCell align="center">
+                    {calculateGrade(totalSubjectMarks)}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+            <TableRow>
+              <TableCell colSpan={4} align="right">
+                Overall Marks
+              </TableCell>
+              <TableCell align="center">{totalMarks}</TableCell>
+              <TableCell />
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={4} align="right">
+                Overall Percentage
+              </TableCell>
+              <TableCell align="center">
+                {overallPercentage.toFixed(2)}%
+              </TableCell>
+              <TableCell />
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
+  );
+};
+
+function GradeInformation() {
+  return (
+    <TableContainer component={Paper} sx={{ mt: 2 }}>
+      <Table aria-label="grades table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Grade</TableCell>
+            <TableCell align="center">A1</TableCell>
+            <TableCell align="center">A2</TableCell>
+            <TableCell align="center">B1</TableCell>
+            <TableCell align="center">B2</TableCell>
+            <TableCell align="center">C1</TableCell>
+            <TableCell align="center">C2</TableCell>
+            <TableCell align="center">D</TableCell>
+            <TableCell align="center">E</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>Minimum Score</TableCell>
+            <TableCell align="center">91</TableCell>
+            <TableCell align="center">81</TableCell>
+            <TableCell align="center">71</TableCell>
+            <TableCell align="center">61</TableCell>
+            <TableCell align="center">51</TableCell>
+            <TableCell align="center">41</TableCell>
+            <TableCell align="center">33</TableCell>
+            <TableCell align="center">Below 33</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+interface AttendanceComponentProps {
+  attendanceData: {
+    present: number;
+    outOf: number;
+  };
+}
+const AttendanceComponent = ({ attendanceData }: AttendanceComponentProps) => {
+  const attendancePercentage =
+    (attendanceData.present / attendanceData.outOf) * 100;
+
+  return (
+    <Box sx={{ my: 2 }}>
+      <Typography variant="h6" gutterBottom>
+        Attendance
+      </Typography>
+      <Typography variant="body1" sx={{ mb: 1 }}>
+        {attendanceData.present} / {attendanceData.outOf}
+      </Typography>
+    </Box>
+  );
+};

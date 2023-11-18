@@ -78,6 +78,7 @@ export function AuthProvider({ children }: Props) {
           }
           dispatch({
             type: Types.INITIAL,
+
             payload: {
               user: {
                 ...user,
@@ -117,14 +118,14 @@ export function AuthProvider({ children }: Props) {
     () => ({
       user: state.user,
       method: "firebase",
-      loading: status === "loading",
-      authenticated: status === "authenticated",
-      unauthenticated: status === "unauthenticated",
+      loading: state.loading,
+      authenticated: !!state.user,
+      unauthenticated: !state.user,
       logout,
       loginWithGoogle,
       refreshUser,
     }),
-    [loginWithGoogle, status, state.user, logout, refreshUser]
+    [loginWithGoogle, state, logout, refreshUser]
   );
 
   return (
