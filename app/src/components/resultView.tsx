@@ -19,6 +19,7 @@ import { calculateGrade } from "src/utils/result";
 
 const TableCell = styled(MuiTableCell)({
   padding: "6px",
+  border: '1px solid #ccc',
 });
 
 export function ResultView({ data }: { data: Result }) {
@@ -29,8 +30,8 @@ export function ResultView({ data }: { data: Result }) {
       <Box
         sx={{
           backgroundColor: "slate.100",
-          //   border: 1,
-          //   borderColor: "black",
+            // border: 1,
+            // borderColor: "black",
           p: 2,
           textTransform: "uppercase",
         }}
@@ -55,6 +56,7 @@ export function ResultView({ data }: { data: Result }) {
       <StudentResultTable subjects={data.results.subjects} />
       <AttendanceComponent attendanceData={data.attendance} />
       <GradeInformation />
+      <SignatureComponent />
     </Container>
   );
 }
@@ -229,6 +231,17 @@ function GradeInformation() {
             <TableCell align="center">33</TableCell>
             <TableCell align="center">Below 33</TableCell>
           </TableRow>
+          <TableRow>
+            <TableCell>Discipline</TableCell>
+            <TableCell align="center"></TableCell>
+            <TableCell align="center"></TableCell>
+            <TableCell align="center"></TableCell>
+            <TableCell align="center"></TableCell>
+            <TableCell align="center"></TableCell>
+            <TableCell align="center"></TableCell>
+            <TableCell align="center"></TableCell>
+            <TableCell align="center">Needs Improvement</TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>
@@ -246,13 +259,74 @@ const AttendanceComponent = ({ attendanceData }: AttendanceComponentProps) => {
     (attendanceData.present / attendanceData.outOf) * 100;
 
   return (
-    <Box sx={{ my: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        Attendance
-      </Typography>
-      <Typography variant="body1" sx={{ mb: 1 }}>
-        {attendanceData.present} / {attendanceData.outOf}
-      </Typography>
-    </Box>
+    <div style={{ display: 'flex', flexDirection: 'row', width: '100%', paddingTop: '25px', paddingBottom: '25px' }}>
+      <div style={{ flex: 3, paddingRight: '10px' }}>
+        <div>
+          <TableContainer component={Paper} sx={{ mt: 2 }}>
+            <Table aria-label="grades table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>CO-SCHOLASTIC AREAS</TableCell>
+                  <TableCell>1<sup>st</sup> Term Exam</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>Work Education</TableCell>
+                  <TableCell>A1</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Art Education</TableCell>
+                  <TableCell>A1</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Health & Physical Education</TableCell>
+                  <TableCell>A1</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Discipline</TableCell>
+                  <TableCell>A1</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      </div>
+      <div style={{ flex: 1, paddingLeft: '10px',  display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', border: '1px solid #ccc', padding: '10px'}}>
+        <div>
+          <Typography variant="h6" gutterBottom sx={{ marginBottom: '8px' }}>
+            Attendance:
+          </Typography>
+          <Typography variant="body1" sx={{ marginBottom: '8px' }} style={{ marginBottom: '8px' }}>
+            {attendanceData.present} / {attendanceData.outOf}
+          </Typography>
+          
+        </div>
+      </div>
+    </div>
+
+  );
+};
+
+const SignatureComponent = () => {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'row' }}>
+      
+      <div style={{ flex: 1, padding: '100px', width: '100%' }}>
+        <Typography variant="body1">
+        CLASS TEACHER SIGN
+        </Typography>
+      </div>
+      <div style={{ flex: 1, padding: '100px', width: '100%' }}>
+        <Typography variant="body1">
+        PARENTS SIGN
+        </Typography>
+      </div>
+      <div style={{ flex: 1, padding: '100px', width: '100%' }}>
+        <Typography variant="body2">
+        PRINCIPAL SIGN
+        </Typography>
+      </div>
+    </div>
   );
 };
