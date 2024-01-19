@@ -19,7 +19,7 @@ import { calculateGrade } from "src/utils/result";
 
 const TableCell = styled(MuiTableCell)({
   padding: "6px",
-  border: '1px solid #ccc',
+  border: "1px solid #ccc",
 });
 
 export function ResultView({ data }: { data: Result }) {
@@ -30,39 +30,70 @@ export function ResultView({ data }: { data: Result }) {
       <Box
         sx={{
           backgroundColor: "slate.100",
-            // border: 1,
-            // borderColor: "black",
           p: 2,
           textTransform: "uppercase",
         }}
       >
-        <MetaDataHolder label="Name" value={studentData.name} />
-        <MetaDataHolder label="Class" value={studentData.currentClass} />
-        <MetaDataHolder
-          label="Roll Number"
-          value={String(studentData.currentRoll)}
-        />
-        <MetaDataHolder label="Admission No" value={studentData.admissionNo} />
-        <MetaDataHolder label="Father's Name" value={studentData.fatherName} />
-        <MetaDataHolder label="Mother's Name" value={studentData.motherName} />
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <MetaDataHolder label="Name" value={studentData.name} />
+          </Grid>
+          <Grid item xs={12}>
+            <MetaDataHolder
+              label="Father's Name"
+              value={studentData.fatherName}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <MetaDataHolder
+              label="Mother's Name"
+              value={studentData.motherName}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <MetaDataHolder label="Class" value={studentData.currentClass} />
+          </Grid>
+          <Grid item xs={4}>
+            <MetaDataHolder
+              label="Roll No."
+              value={String(studentData.currentRoll)}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <MetaDataHolder label="Ad. No" value={studentData.admissionNo} />
+          </Grid>
+        </Grid>
       </Box>
     );
   };
 
   return (
-    <Container maxWidth="md" sx={{ p: "10px" }}>
-      <Header data={data} />
-      <StudentData />
-      <StudentResultTable subjects={data.results.subjects} />
-      <AttendanceComponent attendanceData={data.attendance} />
-      <GradeInformation />
-      <SignatureComponent />
-    </Container>
+    <>
+      <Container maxWidth="md" sx={{ p: "10px" }}>
+        <Header data={data} />
+        <StudentData />
+        <StudentResultTable subjects={data.results.subjects} />
+        <AttendanceComponent attendanceData={data.attendance} />
+        <GradeInformation />
+        <SignatureComponent />
+      </Container>
+      <Box
+        sx={{
+          width: "calc(100% - 10px)",
+          height: "calc(100% - 10px)",
+          position: "fixed",
+          top: "5px",
+          left: "5px",
+          border: "2px solid #aeaeae",
+          zIndex: 1000,
+        }}
+      />
+    </>
   );
 }
 
 function Logo() {
-  return <img src="/logo512.png" alt="logo" style={{ maxWidth: 130 }} />;
+  return <img src="/logo512.png" alt="logo" style={{ maxWidth: 100 }} />;
 }
 
 function Header({ data }: { data: Result }) {
@@ -86,17 +117,30 @@ function Header({ data }: { data: Result }) {
           textAlign: "center",
         }}
       >
-        <Typography variant="h4" sx={{ fontWeight: "bold", fontSize: "2rem" }}>
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: "bold", fontSize: "1.5rem" }}
+        >
           Prem Chandra Kids School
         </Typography>
-        <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-          Result of {data.results.meta.term}-term {data.results.meta.year}{" "}
-          Examination
+        <Typography variant="body1" sx={{ fontSize: "0.9rem" }}>
+          Rajopatti, Dumra Road, Sitamarhi
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{ fontWeight: "bold", fontSize: "0.9rem" }}
+        >
+          Result of {capitaliseFirstLetter(data.results.meta.term)}-term{" "}
+          {data.results.meta.year} Examination
         </Typography>
       </Box>
       <Logo />
     </Box>
   );
+}
+
+function capitaliseFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 const MetaDataHolder = ({
@@ -107,13 +151,18 @@ const MetaDataHolder = ({
   value: string | null;
 }) => (
   <Grid container spacing={1}>
-    <Grid item xs={3}>
-      <Typography variant="body1" component="span" fontWeight="bold">
+    <Grid item xs={5}>
+      <Typography
+        variant="body1"
+        component="span"
+        fontWeight="bold"
+        fontSize="0.9rem"
+      >
         {label}:
       </Typography>
     </Grid>
-    <Grid item xs={9}>
-      <Typography variant="body1" component="span">
+    <Grid item xs={5}>
+      <Typography fontSize="0.9rem" variant="body1" component="span">
         {value}
       </Typography>
     </Grid>
@@ -231,7 +280,7 @@ function GradeInformation() {
             <TableCell align="center">33</TableCell>
             <TableCell align="center">Below 33</TableCell>
           </TableRow>
-          <TableRow>
+          {/* <TableRow>
             <TableCell>Discipline</TableCell>
             <TableCell align="center"></TableCell>
             <TableCell align="center"></TableCell>
@@ -241,7 +290,7 @@ function GradeInformation() {
             <TableCell align="center"></TableCell>
             <TableCell align="center"></TableCell>
             <TableCell align="center">Needs Improvement</TableCell>
-          </TableRow>
+          </TableRow> */}
         </TableBody>
       </Table>
     </TableContainer>
@@ -259,15 +308,27 @@ const AttendanceComponent = ({ attendanceData }: AttendanceComponentProps) => {
     (attendanceData.present / attendanceData.outOf) * 100;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', width: '100%', paddingTop: '25px', paddingBottom: '25px' }}>
-      <div style={{ flex: 3, paddingRight: '10px' }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        width: "100%",
+        paddingTop: "10px",
+        paddingBottom: "10px",
+        alignItems: "center",
+        gap: "10px",
+      }}
+    >
+      <div style={{ flex: 3 }}>
         <div>
           <TableContainer component={Paper} sx={{ mt: 2 }}>
             <Table aria-label="grades table">
               <TableHead>
                 <TableRow>
                   <TableCell>CO-SCHOLASTIC AREAS</TableCell>
-                  <TableCell>1<sup>st</sup> Term Exam</TableCell>
+                  <TableCell>
+                    1<sup>st</sup> Term Exam
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -292,41 +353,60 @@ const AttendanceComponent = ({ attendanceData }: AttendanceComponentProps) => {
           </TableContainer>
         </div>
       </div>
-      <div style={{ flex: 1, paddingLeft: '10px',  display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', border: '1px solid #ccc', padding: '10px'}}>
+      <div
+        style={{
+          flex: 1,
+          paddingLeft: "10px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          border: "1px solid #ccc",
+          padding: "10px",
+        }}
+      >
         <div>
-          <Typography variant="h6" gutterBottom sx={{ marginBottom: '8px' }}>
+          <Typography variant="h6" gutterBottom sx={{ marginBottom: "8px" }}>
             Attendance:
           </Typography>
-          <Typography variant="body1" sx={{ marginBottom: '8px' }} style={{ marginBottom: '8px' }}>
+          <Typography
+            variant="body1"
+            sx={{ marginBottom: "8px" }}
+            style={{ marginBottom: "8px" }}
+          >
             {attendanceData.present} / {attendanceData.outOf}
           </Typography>
-          
         </div>
       </div>
     </div>
-
   );
 };
 
 const SignatureComponent = () => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
-      
-      <div style={{ flex: 1, padding: '100px', width: '100%' }}>
-        <Typography variant="body1">
-        CLASS TEACHER SIGN
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width: "100%",
+      }}
+    >
+      <Box sx={{ flex: 1, mt: 10, width: "100%" }}>
+        <Typography textAlign="center" width="100%" variant="body1">
+          CLASS TEACHER SIGN
         </Typography>
-      </div>
-      <div style={{ flex: 1, padding: '100px', width: '100%' }}>
-        <Typography variant="body1">
-        PARENTS SIGN
+      </Box>
+      <Box sx={{ flex: 1, mt: 10, width: "100%" }}>
+        <Typography textAlign="center" width="100%" variant="body1">
+          PARENTS SIGN
         </Typography>
-      </div>
-      <div style={{ flex: 1, padding: '100px', width: '100%' }}>
-        <Typography variant="body2">
-        PRINCIPAL SIGN
+      </Box>
+      <Box sx={{ flex: 1, mt: 10, width: "100%" }}>
+        <Typography textAlign="center" width="100%" variant="body1">
+          PRINCIPAL SIGN
         </Typography>
-      </div>
+      </Box>
     </div>
   );
 };
