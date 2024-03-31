@@ -1,6 +1,6 @@
 {
-  "name": "desktop",
-  "productName": "PCKS Result",
+  "name": "pcksresult",
+  "productName": "pcksresult",
   "version": "1.0.0",
   "description": "Prem Chandra Kids School",
   "main": "src/index.js",
