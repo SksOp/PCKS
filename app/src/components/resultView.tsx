@@ -146,8 +146,11 @@ function Header({ data }: { data: Result }) {
           variant="body1"
           sx={{ fontWeight: "bold", fontSize: "0.9rem" }}
         >
-          Result of <RenderTerm term={data.results.meta.term} />{" "}
-          {data.results.meta.year} Examination
+          Result of
+          <RenderTerm term={data.results.meta.term} /> Examination{" "}
+          {data.results.meta.year}-
+          {/* assuming that the year is in pattern 2024 */}
+          {(Number(data.results.meta.year) % 100) + 1}
         </Typography>
       </Box>
       <Logo />
@@ -173,7 +176,7 @@ function RenderTerm({ term }: { term: string }) {
           2<sup>nd</sup> Term
         </>
       );
-    case "Annual":
+    case "annual":
       return <> Annual</>;
 
     default:
