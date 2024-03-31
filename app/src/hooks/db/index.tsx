@@ -53,7 +53,7 @@ export function useSemester(batch: string) {
   const exist = {
     isFirstTerm: !firstTerm?.empty,
     isSecondTerm: !secondTerm?.empty,
-    isannual: !annual?.empty,
+    isAnnual: !annual?.empty,
   };
 
   return useMemo(() => {

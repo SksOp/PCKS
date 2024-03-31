@@ -113,9 +113,11 @@ function ResultDashBoard() {
           Result Dashboard - Batch {currentBatch}
         </Typography>
         <Stack spacing={2}>
-          {["First", "Second", "Annual"].map((term, index) => {
-            const termExist = exist[`is${term}Term` as keyof typeof exist];
-            const termLabel = term === "Annual" ? "Annual" : `${term} Term`;
+          {["First Term", "Second Term", "Annual"].map((term, index) => {
+            console.log(exist);
+            const termExist =
+              exist[`is${term.replace(" ", "")}` as keyof typeof exist];
+            const termLabel = term;
             return (
               <Grid item xs={12} sm={6} md={4} key={term}>
                 <Paper elevation={1} sx={{ padding: 2 }}>
