@@ -6,13 +6,14 @@ import {
   TableCell as MuiTableCell,
   TableContainer,
   TableHead,
-  TableRow,
+  TableRow as MuiTableRow,
   Typography,
   Box,
   Container,
   Grid,
   styled,
   LinearProgress,
+  Stack,
 } from "@mui/material";
 import { Result, Subject } from "types";
 import { calculateGrade } from "src/utils/result";
@@ -22,6 +23,10 @@ const TableCell = styled(MuiTableCell)({
   border: "1px solid #ccc",
 });
 
+const TableRow = styled(MuiTableRow)({
+  "-webkit-print-color-adjust": "exact",
+  colorAdjust: "exact",
+});
 export function ResultView({ data }: { data: Result }) {
   const StudentData = () => {
     const studentData = data.student;
@@ -81,13 +86,16 @@ export function ResultView({ data }: { data: Result }) {
         <Header data={data} />
         <StudentData />
         <StudentResultTable subjects={data.results.subjects} />
-        <AttendanceComponent attendanceData={data.attendance} />
+        <AttendanceComponent
+          attendanceData={data.attendance}
+          term={data.results.meta.term}
+        />
         <GradeInformation />
         <SignatureComponent />
       </Container>
       <Box
         sx={{
-          width: "calc(100% - 10px)",
+          width: "calc(100% - 15px)",
           height: "calc(100% - 10px)",
           position: "fixed",
           top: "5px",
@@ -138,7 +146,7 @@ function Header({ data }: { data: Result }) {
           variant="body1"
           sx={{ fontWeight: "bold", fontSize: "0.9rem" }}
         >
-          Result of {capitaliseFirstLetter(data.results.meta.term)}-term{" "}
+          Result of <RenderTerm term={data.results.meta.term} />{" "}
           {data.results.meta.year} Examination
         </Typography>
       </Box>
@@ -151,6 +159,27 @@ function capitaliseFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function RenderTerm({ term }: { term: string }) {
+  switch (term) {
+    case "first":
+      return (
+        <>
+          1<sup>st</sup> Term
+        </>
+      );
+    case "second":
+      return (
+        <>
+          2<sup>nd</sup> Term
+        </>
+      );
+    case "Annual":
+      return <> Annual</>;
+
+    default:
+      return <>{term}</>;
+  }
+}
 const MetaDataHolder = ({
   label,
   value,
@@ -194,10 +223,10 @@ const StudentResultTable = ({ subjects }: StudentResultTableProps) => {
 
   return (
     <>
-      <TableContainer component={Paper}>
+      <TableContainer>
         <Table aria-label="simple table">
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ backgroundColor: "#eeeeee" }}>
               <TableCell>Subject</TableCell>
               <TableCell align="center" colSpan={2}>
                 Obtained Marks
@@ -220,7 +249,14 @@ const StudentResultTable = ({ subjects }: StudentResultTableProps) => {
               const totalSubjectMarks =
                 Number(subject.results.theory) + Number(subject.results.other);
               return (
-                <TableRow key={subject.subjectName}>
+                <TableRow
+                  sx={{
+                    "&:nth-of-type(odd)": {
+                      backgroundColor: "#eeeeee",
+                    },
+                  }}
+                  key={subject.subjectName}
+                >
                   <TableCell component="th" scope="row">
                     {subject.subjectName}
                   </TableCell>
@@ -243,7 +279,7 @@ const StudentResultTable = ({ subjects }: StudentResultTableProps) => {
               <TableCell align="center">{totalMarks}</TableCell>
               <TableCell />
             </TableRow>
-            <TableRow>
+            <TableRow sx={{ backgroundColor: "#eeeeee" }}>
               <TableCell colSpan={4} align="right">
                 Overall Percentage
               </TableCell>
@@ -261,10 +297,10 @@ const StudentResultTable = ({ subjects }: StudentResultTableProps) => {
 
 function GradeInformation() {
   return (
-    <TableContainer component={Paper} sx={{ mt: 2 }}>
+    <TableContainer sx={{ mt: 2 }}>
       <Table aria-label="grades table">
         <TableHead>
-          <TableRow>
+          <TableRow sx={{ backgroundColor: "#eeeeee" }}>
             <TableCell>Grade</TableCell>
             <TableCell align="center">A1</TableCell>
             <TableCell align="center">A2</TableCell>
@@ -310,11 +346,15 @@ interface AttendanceComponentProps {
     present: number;
     outOf: number;
   };
+  term: string;
 }
-const AttendanceComponent = ({ attendanceData }: AttendanceComponentProps) => {
+const AttendanceComponent = ({
+  attendanceData,
+  term,
+}: AttendanceComponentProps) => {
   const attendancePercentage =
     (attendanceData.present / attendanceData.outOf) * 100;
-
+  console.log(term);
   return (
     <div
       style={{
@@ -323,19 +363,26 @@ const AttendanceComponent = ({ attendanceData }: AttendanceComponentProps) => {
         width: "100%",
         paddingTop: "10px",
         paddingBottom: "10px",
-        alignItems: "center",
+        alignItems: "flex-start",
         gap: "10px",
       }}
     >
       <div style={{ flex: 3 }}>
         <div>
-          <TableContainer component={Paper} sx={{ mt: 2 }}>
-            <Table aria-label="grades table">
+          <TableContainer>
+            <Table
+              aria-label="grades table"
+              sx={{
+                "& .MuiTableCell-root": {
+                  p: 0.3,
+                },
+              }}
+            >
               <TableHead>
-                <TableRow>
+                <TableRow sx={{ backgroundColor: "#eeeeee" }}>
                   <TableCell>CO-SCHOLASTIC AREAS</TableCell>
                   <TableCell>
-                    1<sup>st</sup> Term Exam
+                    <RenderTerm term={term} /> Exam
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -344,7 +391,7 @@ const AttendanceComponent = ({ attendanceData }: AttendanceComponentProps) => {
                   <TableCell>Work Education</TableCell>
                   <TableCell>A1</TableCell>
                 </TableRow>
-                <TableRow>
+                <TableRow sx={{ backgroundColor: "#eeeeee" }}>
                   <TableCell>Art Education</TableCell>
                   <TableCell>A1</TableCell>
                 </TableRow>
@@ -352,7 +399,7 @@ const AttendanceComponent = ({ attendanceData }: AttendanceComponentProps) => {
                   <TableCell>Health & Physical Education</TableCell>
                   <TableCell>A1</TableCell>
                 </TableRow>
-                <TableRow>
+                <TableRow sx={{ backgroundColor: "#eeeeee" }}>
                   <TableCell>Discipline</TableCell>
                   <TableCell>A1</TableCell>
                 </TableRow>
@@ -364,27 +411,32 @@ const AttendanceComponent = ({ attendanceData }: AttendanceComponentProps) => {
       <div
         style={{
           flex: 1,
-          paddingLeft: "10px",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
           border: "1px solid #ccc",
-          padding: "10px",
+          padding: "5px",
         }}
       >
-        <div>
-          <Typography variant="h6" gutterBottom sx={{ marginBottom: "8px" }}>
-            Attendance:
-          </Typography>
-          <Typography
-            variant="body1"
-            sx={{ marginBottom: "8px" }}
-            style={{ marginBottom: "8px" }}
-          >
-            {attendanceData.present} / {attendanceData.outOf}
-          </Typography>
-        </div>
+        <Typography
+          variant="body1"
+          fontWeight={600}
+          sx={{ marginBottom: "6px" }}
+        >
+          Attendance:
+        </Typography>
+        <Stack alignItems="center" width="min-content">
+          <Typography variant="body1">{attendanceData.present}</Typography>
+          <Box
+            sx={{
+              width: "20px",
+              height: "1px",
+              bgcolor: "black",
+              "-webkit-print-color-adjust": "exact",
+              colorAdjust: "exact",
+            }}
+          ></Box>
+          <Typography variant="body1">{attendanceData.outOf}</Typography>
+        </Stack>
       </div>
     </div>
   );

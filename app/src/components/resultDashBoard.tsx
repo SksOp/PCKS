@@ -113,11 +113,10 @@ function ResultDashBoard() {
           Result Dashboard - Batch {currentBatch}
         </Typography>
         <Stack spacing={2}>
-          {["First Term", "Second Term", "Annual"].map((term, index) => {
-            console.log(exist);
+          {["First Term", "Second Term", "Annual"].map((termLabel) => {
             const termExist =
-              exist[`is${term.replace(" ", "")}` as keyof typeof exist];
-            const termLabel = term;
+              exist[`is${termLabel.replace(" ", "")}` as keyof typeof exist];
+            const term = termLabel.replace(" Term", ""); // I am making th is complex because of out standards that just store first / second / annual in the db as collection name
             return (
               <Grid item xs={12} sm={6} md={4} key={term}>
                 <Paper elevation={1} sx={{ padding: 2 }}>
