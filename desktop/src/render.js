@@ -58,9 +58,20 @@ async function download(event) {
     if (!isCompleted) continue;
     const url = `${baseURL}/dashboard/result/view?batch=${batch}&term=${term}&admissionNo=${admissionNo}`;
     await page.goto(url, { waitUntil: "networkidle2" });
-
+    await page.waitForTimeout(1000); // this is now deprecated
     const tempPdfPath = path.join(tempDir, `${admissionNo}.pdf`);
-    await page.pdf({ path: tempPdfPath, format: "A4" });
+    await page.emulateMediaType("print");
+    await page.pdf({
+      path: tempPdfPath,
+      format: "A4",
+      margin: {
+        top: "15mm",
+        right: "15mm",
+        bottom: "15mm",
+        left: "15mm",
+      },
+    });
+
     downloadedPDFs.push(tempPdfPath);
 
     progressBar.style.width = `${(current / total) * 100}%`;
