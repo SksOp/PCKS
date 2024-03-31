@@ -355,9 +355,9 @@ const AttendanceComponent = ({
   attendanceData,
   term,
 }: AttendanceComponentProps) => {
-  const attendancePercentage =
-    (attendanceData.present / attendanceData.outOf) * 100;
-  console.log(term);
+  const attendancePercentage = // to avoid division by zero
+    (attendanceData.present / (attendanceData.outOf || 0.001)) * 100;
+
   return (
     <div
       style={{
@@ -425,7 +425,15 @@ const AttendanceComponent = ({
           fontWeight={600}
           sx={{ marginBottom: "6px" }}
         >
-          Attendance:
+          Attendance:{" "}
+          <Typography
+            variant="body1"
+            component={"span"}
+            sx={{ marginBottom: "6px" }}
+          >
+            {" "}
+            {attendancePercentage.toFixed(2)}%{" "}
+          </Typography>
         </Typography>
         <Stack alignItems="center" width="min-content">
           <Typography variant="body1">{attendanceData.present}</Typography>
