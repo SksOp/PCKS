@@ -34,7 +34,15 @@ export function ResultView({ data }: { data: Result }) {
           textTransform: "uppercase",
         }}
       >
-        <Grid container spacing={1}>
+        <Grid
+          sx={{
+            "& .MuiGrid-item": {
+              p: "1px",
+            },
+          }}
+          container
+          spacing={1}
+        >
           <Grid item xs={12}>
             <MetaDataHolder label="Name" value={studentData.name} />
           </Grid>
@@ -151,7 +159,7 @@ const MetaDataHolder = ({
   value: string | null;
 }) => (
   <Grid container spacing={1}>
-    <Grid item xs={5}>
+    <Grid item xs={4}>
       <Typography
         variant="body1"
         component="span"
@@ -161,7 +169,7 @@ const MetaDataHolder = ({
         {label}:
       </Typography>
     </Grid>
-    <Grid item xs={5}>
+    <Grid item xs={4}>
       <Typography fontSize="0.9rem" variant="body1" component="span">
         {value}
       </Typography>
