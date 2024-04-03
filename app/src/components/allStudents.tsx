@@ -14,7 +14,7 @@ import {
   Card,
   CardActions,
   CardContent,
-  CircularProgress,
+  Stack,
   Container,
   LinearProgress,
   Typography,
@@ -25,14 +25,14 @@ import { Student } from 'types';
 function StudentCard({ student }:{student:Student}) {
   const navigate = useNavigate();
   return (
-    <Card variant="outlined" sx={{ mb: 2 }}>
+    <Card variant="outlined" sx={{ mb: 2,width:"250px" }}>
       <CardContent>
         <Typography variant="h5" component="div">{student.name}</Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          Class: {student.currentClass} - Section: {student.currentSection} - Roll: {student.currentRoll}
+          Class: {student.currentClass} - {student.currentSection}<br/> Roll: {student.currentRoll}
         </Typography>
-        <Typography variant="body2">{student.fatherName}</Typography>
-        <Typography variant="body2">{student.motherName}</Typography>
+        <Typography variant="body2">F: {student.fatherName}</Typography>
+        <Typography variant="body2">M: {student.motherName}</Typography>
       </CardContent>
       <CardActions>
         <Button
@@ -82,9 +82,13 @@ function AllStudents() {
             <Typography>{`Class ${classGroup}`}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            {students.map(student => (
-              <StudentCard key={student.admissionNo} student={student} />
-            ))}
+
+            <Stack direction="row"  sx={{flexWrap:"wrap",gap:1}}>
+              {students.map(student => (
+
+                <StudentCard key={student.admissionNo} student={student} />
+              ))}
+            </Stack> 
           </AccordionDetails>
         </Accordion>
       ))}
