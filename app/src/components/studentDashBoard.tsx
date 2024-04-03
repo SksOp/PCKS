@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SchoolIcon from "@mui/icons-material/School";
 import {
   Button,
   Dialog,
@@ -44,6 +45,10 @@ function StudentDashBoard() {
     }
   };
 
+  const handleShowAllStudents = () => {
+    navigate(paths.dashboard.student.all);
+  };
+
   return (
     <Box
       display="flex"
@@ -52,7 +57,7 @@ function StudentDashBoard() {
       gap={4}
       m={4}
     >
-      <Card variant="outlined" sx={{ minWidth: 275 }}>
+      <Card variant="outlined" sx={{ width: "100%", maxWidth: 325 }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             Student Management
@@ -75,7 +80,7 @@ function StudentDashBoard() {
         </CardActions>
       </Card>
 
-      <Card variant="outlined" sx={{ minWidth: 275 }}>
+      <Card variant="outlined" sx={{ width: "100%", maxWidth: 325 }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             Student Information
@@ -123,6 +128,28 @@ function StudentDashBoard() {
           <Button onClick={handleViewProfile}>View</Button>
         </DialogActions>
       </Dialog>
+      <Card variant="outlined" sx={{ width: "100%", maxWidth: 325 }}>
+        <CardContent>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            All Student
+          </Typography>
+          <Typography variant="h5" component="div">
+            List All Students
+          </Typography>
+          {/* <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            Look up details for an existing student.
+          </Typography> */}
+        </CardContent>
+        <CardActions>
+          <Button
+            size="small"
+            startIcon={<SchoolIcon />}
+            onClick={handleShowAllStudents}
+          >
+            View All Students
+          </Button>
+        </CardActions>
+      </Card>
     </Box>
   );
 }
