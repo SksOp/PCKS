@@ -13,6 +13,7 @@ const LogOut = React.lazy(() => import("src/sections/logout"));
 const ResultBatch = React.lazy(() => import("src/sections/resultBatch"));
 const AddResult = React.lazy(() => import("src/sections/addResult"));
 const ResultView = React.lazy(() => import("src/sections/resultView"));
+const AllStudent = React.lazy(() => import("src/sections/allStudents"));
 
 export default function Router() {
   return useRoutes([...root]);
@@ -57,6 +58,14 @@ const studentPaths = [
     element: (
       <AuthGuard>
         <AddStudent />
+      </AuthGuard>
+    ),
+  },
+  {
+    path: paths.dashboard.student.all,
+    element: (
+      <AuthGuard>
+        <AllStudent />
       </AuthGuard>
     ),
   },

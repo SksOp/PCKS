@@ -41,7 +41,7 @@ function StudentDashBoard() {
 
   const handleViewProfile = () => {
     if (admissionNo) {
-      navigate(`${viewStudentPath}/${admissionNo}`);
+      navigate(paths.dashboard.student.profile.replace(":admissionNo",admissionNo));
     }
   };
 
