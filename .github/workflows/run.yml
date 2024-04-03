@@ -19,9 +19,9 @@ jobs:
         run: npm i
       - name: Build
         run: npm run build:app
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: Install Firebase Cli
+        run: npm i -g firebase-tools
+      - name: Deploy Hosting
+        run: firebase deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }}
+      - name: Deploy Functions
+        run: firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }}
