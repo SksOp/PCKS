@@ -7,7 +7,11 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
 
       - name: Recreate App env from github secert
         run: echo "${{ secrets.ENV_APP }}" > app/.env
@@ -25,7 +29,5 @@ jobs:
         run: npm i -g firebase-tools
 
       - name: Deploy Hosting
-        run: firebase deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }}
+        run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
 
-      - name: Deploy Functions
-        run: firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }}
