@@ -27,7 +27,9 @@ export interface Attendance {
 }
 
 export interface Result {
-  student: Student;
+  admissionNo: string;
+  currentClass: string;
+  currentSection: string;
   results: Results;
   attendance: Attendance;
   isCompleted?: boolean;

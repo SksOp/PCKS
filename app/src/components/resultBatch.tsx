@@ -5,10 +5,9 @@ import {
   Grid,
   LinearProgress,
 } from "@mui/material";
-import { collection, query } from "firebase/firestore";
-import React from "react";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { DB, RESULTS_COLLECTION } from "src/firebase";
+import { collection, doc} from "firebase/firestore";
+import { useCollection, useDocument } from "react-firebase-hooks/firestore";
+import { DB, RESULTS_COLLECTION, STUDENTS_COLLECTION } from "src/firebase";
 import { Result, Student } from "types";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
@@ -30,6 +29,17 @@ interface Props {
   batch: string;
   term: string;
 }
+
+function studentInfo({admissionNo}:{admissionNo:string}){
+  const studentRef = doc(DB, STUDENTS_COLLECTION, admissionNo);
+    const [value, loading, error] = useDocument(studentRef);
+    const studentData: Student | undefined = value?.data() as Student;
+    if (loading) return <LinearProgress />;
+    if (error) return <div>{error.message}</div>;
+    if (!studentData) return <Typography variant="h3">No Data</Typography>;
+  return studentData;
+}
+
 function ResultBatch({ batch, term }: Props) {
   const collectionPath = `${RESULTS_COLLECTION}/${batch}/${term.toLowerCase()}`;
   const collectionRef = collection(DB, collectionPath);
@@ -37,7 +47,7 @@ function ResultBatch({ batch, term }: Props) {
   if (loading) return <LinearProgress />;
   if (error) return <div>{error.message}</div>;
 
-  const results: Result[] = value?.docs.map((doc) => doc.data()) as Result[];
+  const results: Result[] = value?.docs.map((doc) => doc.data()) as Result[];  
   const grouped = groupByClass(results);
 
   return (
@@ -50,10 +60,11 @@ function ResultBatch({ batch, term }: Props) {
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={2}>
-                {results.map((result) => (
+                {results.map((result,idx) => (
+                  
                   <RenderStudentCard
-                    key={result.student.admissionNo}
-                    student={result.student}
+                    key={result.admissionNo}
+                    admissionNo={result.admissionNo}
                     isCompleted={Boolean(result.isCompleted)}
                   />
                 ))}
@@ -70,7 +81,7 @@ export default ResultBatch;
 
 function groupByClass(results: Result[]) {
   const grouped = results.reduce((acc, curr) => {
-    const { currentClass: className } = curr.student;
+    const { currentClass: className } = curr;
     if (acc[className]) {
       acc[className].push(curr);
     } else {
@@ -82,14 +93,21 @@ function groupByClass(results: Result[]) {
 }
 
 const RenderStudentCard = ({
-  student,
+  admissionNo,
   isCompleted,
 }: {
-  student: Student;
+  admissionNo: string;
   isCompleted: boolean;
 }) => {
+  const studentRef = doc(DB, STUDENTS_COLLECTION, admissionNo);
+  const [value, loading, error] = useDocument(studentRef);
+  const studentData: Student | undefined = value?.data() as Student;
   const param = useSearchParams();
   const navigate = useNavigate();
+  if (loading) return <LinearProgress />;
+  if (error) return <div>{error.message}</div>;
+  if (!studentData) return <Typography variant="h3">No Data</Typography>;
+
   const handleEditClick = (admissionNo: string) => {
     param.set("admissionNo", admissionNo);
     navigate(`${paths.dashboard.result.add}?${param.toString()}`);
@@ -110,12 +128,12 @@ const RenderStudentCard = ({
           mb: 2,
         }}
       >
-        <Avatar>{student.name.charAt(0)}</Avatar>
+        <Avatar>{studentData.name.charAt(0)}</Avatar>
         <Typography variant="subtitle1" component="div">
-          {student.name}
+          {studentData.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {student.admissionNo}
+          {studentData.admissionNo}
         </Typography>
         <Chip
           label={isCompleted ? "Completed" : "Not Completed"}
@@ -129,7 +147,7 @@ const RenderStudentCard = ({
           variant="outlined"
           fullWidth
           startIcon={<EditIcon />}
-          onClick={() => handleEditClick(student.admissionNo)}
+          onClick={() => handleEditClick(studentData.admissionNo)}
         >
           Edit
         </Button>
@@ -137,7 +155,7 @@ const RenderStudentCard = ({
           <Button
             fullWidth
             variant="contained"
-            onClick={() => handleViewClick(student.admissionNo)}
+            onClick={() => handleViewClick(studentData.admissionNo)}
           >
             View
           </Button>

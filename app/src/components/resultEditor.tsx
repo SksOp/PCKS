@@ -31,7 +31,7 @@ interface FormValues {
   };
 }
 
-function ResultEditor({ resultDoc }: { resultDoc: Result }) {
+ function ResultEditor({ resultDoc, studentData }: { resultDoc: Result; studentData: Student }) {
   const {
     control,
     register,
@@ -53,7 +53,7 @@ function ResultEditor({ resultDoc }: { resultDoc: Result }) {
   const onSubmit = async (input: FormValues) => {
     const data: CreateResultRequest = {
       subjects: input.subjects,
-      admissionNo: resultDoc.student.admissionNo,
+      admissionNo: resultDoc.admissionNo,
       attendance: input.attendance,
       batch: resultDoc.results.meta.year,
       term: resultDoc.results.meta.term,
@@ -70,7 +70,7 @@ function ResultEditor({ resultDoc }: { resultDoc: Result }) {
     <Container maxWidth="sm">
       <Card variant="outlined" sx={{ mb: 2, maxWidth: "md" }}>
         <CardContent>
-          <GeneralDetails student={resultDoc.student} />
+          <GeneralDetails student={studentData} />
           <form onSubmit={handleSubmit(onSubmit)}>
             <Typography variant="h6" gutterBottom>
               {resultDoc.results.meta.term.toUpperCase()} {"TERM, "}

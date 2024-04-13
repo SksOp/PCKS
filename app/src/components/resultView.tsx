@@ -15,8 +15,10 @@ import {
   LinearProgress,
   Stack,
 } from "@mui/material";
-import { Result, Subject } from "types";
+import { Result, Student, Subject } from "types";
 import { calculateGrade } from "src/utils/result";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { DB, STUDENTS_COLLECTION } from "src/firebase";
 
 const TableCell = styled(MuiTableCell)({
   padding: "6px",
@@ -27,9 +29,8 @@ const TableRow = styled(MuiTableRow)({
   "-webkit-print-color-adjust": "exact",
   colorAdjust: "exact",
 });
-export function ResultView({ data }: { data: Result }) {
+export function ResultView({ resultData,studentData }: { resultData: Result; studentData: Student }) {
   const StudentData = () => {
-    const studentData = data.student;
 
     return (
       <Box
@@ -83,12 +84,12 @@ export function ResultView({ data }: { data: Result }) {
   return (
     <>
       <Container maxWidth="md" sx={{ p: "10px" }}>
-        <Header data={data} />
+        <Header data={resultData} />
         <StudentData />
-        <StudentResultTable subjects={data.results.subjects} />
+        <StudentResultTable subjects={resultData.results.subjects} />
         <AttendanceComponent
-          attendanceData={data.attendance}
-          term={data.results.meta.term}
+          attendanceData={resultData.attendance}
+          term={resultData.results.meta.term}
         />
         <GradeInformation />
         <SignatureComponent />
