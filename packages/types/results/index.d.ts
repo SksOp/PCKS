@@ -30,6 +30,7 @@ export interface Result {
   admissionNo: string;
   currentClass: string;
   currentSection: string;
+  currentRoll: number;
   results: Results;
   attendance: Attendance;
   isCompleted?: boolean;

@@ -60,7 +60,7 @@ function ResultBatch({ batch, term }: Props) {
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={2}>
-                {results.map((result,idx) => (
+                {results.map((result) => (
                   
                   <RenderStudentCard
                     key={result.admissionNo}

@@ -65,12 +65,12 @@ export function ResultView({ resultData,studentData }: { resultData: Result; stu
             />
           </Grid>
           <Grid item xs={4}>
-            <MetaDataHolder label="Class" value={studentData.currentClass} />
+            <MetaDataHolder label="Class" value={resultData.currentClass} />
           </Grid>
           <Grid item xs={4}>
             <MetaDataHolder
               label="Roll No."
-              value={String(studentData.currentRoll)}
+              value={String(resultData.currentRoll)}
             />
           </Grid>
           <Grid item xs={4}>

@@ -64,6 +64,7 @@ export async function createTerm(req: Request, res: Response) {
         admissionNo: student.admissionNo,
         currentClass: student.currentClass,
         currentSection: student.currentSection,
+        currentRoll: student.currentRoll,
         results: {
           meta: {
             term: term,

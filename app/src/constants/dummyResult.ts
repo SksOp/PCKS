@@ -4,6 +4,7 @@ export const dummyResultData: Result = {
     currentClass: "1",
     currentSection: "A",
     admissionNo: "123",
+    currentRoll: 1,
   results: {
     meta: {
       term: "First",
