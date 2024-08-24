@@ -72,7 +72,7 @@ export function ResultView({
           <Grid item xs={4}>
             <MetaDataHolder label="Class" value={resultData.currentClass} />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <MetaDataHolder
               label="Roll No."
               value={String(resultData.currentRoll)}
