@@ -12,7 +12,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20.x"
-  
+
       - name: Node verison details
         run: echo "now using " && node -v
 
@@ -32,5 +32,4 @@ jobs:
         run: npm i -g firebase-tools
 
       - name: Deploy Hosting
-        run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
-
+        run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }} --only hosting
