@@ -2,13 +2,17 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Grid,
   LinearProgress,
+  TextField,
 } from "@mui/material";
-import { collection, doc} from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { DB, RESULTS_COLLECTION, STUDENTS_COLLECTION } from "src/firebase";
-import { Result, Student } from "types";
+import { CreateTermResultForStudent, Result, Student } from "types";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Box,
@@ -24,19 +28,22 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useSearchParams } from "src/hooks/router";
 import { useNavigate } from "react-router-dom";
 import { paths } from "src/router";
+import { useState } from "react";
+import { useFirebaseFunctions } from "src/hooks/server";
+import { enqueueSnackbar } from "notistack";
 
 interface Props {
   batch: string;
   term: string;
 }
 
-function studentInfo({admissionNo}:{admissionNo:string}){
+function studentInfo({ admissionNo }: { admissionNo: string }) {
   const studentRef = doc(DB, STUDENTS_COLLECTION, admissionNo);
-    const [value, loading, error] = useDocument(studentRef);
-    const studentData: Student | undefined = value?.data() as Student;
-    if (loading) return <LinearProgress />;
-    if (error) return <div>{error.message}</div>;
-    if (!studentData) return <Typography variant="h3">No Data</Typography>;
+  const [value, loading, error] = useDocument(studentRef);
+  const studentData: Student | undefined = value?.data() as Student;
+  if (loading) return <LinearProgress />;
+  if (error) return <div>{error.message}</div>;
+  if (!studentData) return <Typography variant="h3">No Data</Typography>;
   return studentData;
 }
 
@@ -47,11 +54,12 @@ function ResultBatch({ batch, term }: Props) {
   if (loading) return <LinearProgress />;
   if (error) return <div>{error.message}</div>;
 
-  const results: Result[] = value?.docs.map((doc) => doc.data()) as Result[];  
+  const results: Result[] = value?.docs.map((doc) => doc.data()) as Result[];
   const grouped = groupByClass(results);
 
   return (
     <Box sx={{ margin: 4 }}>
+      <AddStudentToTheBatchDialog term={term} batch={batch} />
       {Object.entries(grouped).map(([classKey, results]) => (
         <Box key={classKey} sx={{ marginBottom: 4 }}>
           <Accordion key={classKey}>
@@ -61,7 +69,6 @@ function ResultBatch({ batch, term }: Props) {
             <AccordionDetails>
               <Grid container spacing={2}>
                 {results.map((result) => (
-                  
                   <RenderStudentCard
                     key={result.admissionNo}
                     admissionNo={result.admissionNo}
@@ -162,5 +169,51 @@ const RenderStudentCard = ({
         )}
       </CardActions>
     </Card>
+  );
+};
+
+const AddStudentToTheBatchDialog = ({
+  term,
+  batch,
+}: {
+  term: string;
+  batch: string;
+}) => {
+  const [open, setOpen] = useState(false);
+  const [admissionNo, setAdmissionNo] = useState("");
+  const { handleCreateTermResultForStudent } = useFirebaseFunctions();
+  const handleAddStudent = async () => {
+    const data: CreateTermResultForStudent = {
+      admissionNo,
+      term,
+      batch,
+    };
+    const response = await handleCreateTermResultForStudent(data);
+    if (response.success) {
+      setOpen(false);
+      enqueueSnackbar(response.message, {
+        variant: "success",
+      });
+    } else {
+      enqueueSnackbar(response.message, {
+        variant: "error",
+      });
+    }
+  };
+  return (
+    <Dialog open={open} onClose={() => setOpen(false)}>
+      <DialogTitle>Add Student to the Batch</DialogTitle>
+      <DialogContent>
+        <TextField
+          label="Admission No"
+          value={admissionNo}
+          onChange={(e) => setAdmissionNo(e.target.value)}
+          fullWidth
+        />
+        <Button variant="contained" onClick={handleAddStudent}>
+          Add
+        </Button>
+      </DialogContent>
+    </Dialog>
   );
 };

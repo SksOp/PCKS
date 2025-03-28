@@ -2,6 +2,8 @@ import axios from "axios";
 import {
   CreateResultRequest,
   CreateTermResponse,
+  CreateTermResultForStudent,
+  CreateTermResultForStudentResponse,
   GetAdmissionNoAvaibilityResponse,
   HandleAdmissionRequest,
   HandleAdmissionResponse,
@@ -68,6 +70,16 @@ export function useFirebaseFunctions() {
     return data;
   };
 
+  const handleCreateTermResultForStudent = async (
+    input: CreateTermResultForStudent
+  ) => {
+    const URL = `${API}/v1/result/create-term-result-for-student`;
+    const response = await axios.post(URL, {
+      data: input,
+    });
+    const data: CreateTermResultForStudentResponse = response.data;
+    return data;
+  };
   return {
     getAdmissionNoAvaibility,
     handleAdmissionRequest,
@@ -75,5 +87,6 @@ export function useFirebaseFunctions() {
     handleStudentUnregisterRequest,
     handleCreateTerm,
     handleCreateResult,
+    handleCreateTermResultForStudent,
   };
 }
