@@ -47,10 +47,6 @@ const empthUkgResult: Subject[] = [
     results: { theory: null, fullMarks: 100, other: null },
   },
   {
-    subjectName: "EVS",
-    results: { theory: null, fullMarks: 100, other: null },
-  },
-  {
     subjectName: "G.K.",
     results: { theory: null, fullMarks: 100, other: null },
   },
