@@ -20,7 +20,7 @@ v1.use(managementMiddleware);
 v1.use("/student", router.v1.studentRoutes);
 v1.use("/result", router.v1.resultRoutes);
 v1.use("/management", router.v1.managementRoutes);
-
+v1.use("/ranking", router.v1.rankingRoutes);
 app.use("/v1", v1);
 
 export const api = onRequest(app);

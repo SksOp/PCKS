@@ -26,7 +26,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { useSearchParams } from "src/hooks/router";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { paths } from "src/router";
 import { useState } from "react";
 import { useFirebaseFunctions } from "src/hooks/server";
@@ -64,6 +64,14 @@ function ResultBatch({ batch, term }: Props) {
           <Accordion key={classKey}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography variant="h6">Class {classKey}</Typography>
+              <Link
+                to={`${paths.dashboard.result.ranking}?term=${term}&batch=${batch}&class=${classKey}`}
+                style={{ marginLeft: "auto" }}
+              >
+                <Button variant="contained" color="primary">
+                  View Ranking
+                </Button>
+              </Link>
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={2}>

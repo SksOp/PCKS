@@ -68,3 +68,18 @@ export interface CreateResultResponse {
   message: string;
   success: boolean;
 }
+
+export interface GetRankingResponse {
+  message: string;
+  success: boolean;
+  data: Ranking[];
+}
+
+export interface Ranking {
+  name: string;
+  roll: number;
+  totalMarks: number;
+  obtainedMarks: number;
+  percentage: string;
+  rank: number;
+}

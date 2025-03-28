@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Paper,
   Table,
@@ -14,20 +14,20 @@ import {
   styled,
   LinearProgress,
   Stack,
-} from '@mui/material';
-import { Result, Student, Subject } from 'types';
-import { calculateGrade } from 'src/utils/result';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { DB, STUDENTS_COLLECTION } from 'src/firebase';
+} from "@mui/material";
+import { Result, Student, Subject } from "types";
+import { calculateGrade } from "src/utils/result";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { DB, STUDENTS_COLLECTION } from "src/firebase";
 
-const TableCell = styled(MuiTableCell)({
-  padding: '6px',
-  border: '1px solid #ccc',
+export const TableCell = styled(MuiTableCell)({
+  padding: "6px",
+  border: "1px solid #ccc",
 });
 
-const TableRow = styled(MuiTableRow)({
-  '-webkit-print-color-adjust': 'exact',
-  colorAdjust: 'exact',
+export const TableRow = styled(MuiTableRow)({
+  "-webkit-print-color-adjust": "exact",
+  colorAdjust: "exact",
 });
 export function ResultView({
   resultData,
@@ -40,15 +40,15 @@ export function ResultView({
     return (
       <Box
         sx={{
-          backgroundColor: 'slate.100',
+          backgroundColor: "slate.100",
           p: 2,
-          textTransform: 'uppercase',
+          textTransform: "uppercase",
         }}
       >
         <Grid
           sx={{
-            '& .MuiGrid-item': {
-              p: '1px',
+            "& .MuiGrid-item": {
+              p: "1px",
             },
           }}
           container
@@ -86,12 +86,25 @@ export function ResultView({
     );
   };
 
+  const subjects = resultData.results.subjects.filter((s) => {
+    // if class is UKG, then skip EVS
+    if (resultData.currentClass === "U.K.G" && s.subjectName === "EVS") {
+      return false;
+    }
+    return true;
+  });
+
+  console.log("resultData", resultData);
+
   return (
     <>
-      <Container maxWidth="md" sx={{ p: '10px' }}>
-        <Header data={resultData} />
+      <Container maxWidth="md" sx={{ p: "10px" }}>
+        <Header
+          term={resultData.results.meta.term}
+          year={resultData.results.meta.year}
+        />
         <StudentData />
-        <StudentResultTable subjects={resultData.results.subjects} />
+        <StudentResultTable subjects={subjects} />
         <AttendanceComponent
           attendanceData={resultData.attendance}
           term={resultData.results.meta.term}
@@ -101,12 +114,12 @@ export function ResultView({
       </Container>
       <Box
         sx={{
-          width: 'calc(100% - 15px)',
-          height: 'calc(100% - 10px)',
-          position: 'fixed',
-          top: '5px',
-          left: '5px',
-          border: '2px solid #aeaeae',
+          width: "calc(100% - 15px)",
+          height: "calc(100% - 10px)",
+          position: "fixed",
+          top: "5px",
+          left: "5px",
+          border: "2px solid #aeaeae",
           zIndex: 1000,
         }}
       />
@@ -118,45 +131,53 @@ function Logo() {
   return <img src="/logo512.png" alt="logo" style={{ maxWidth: 100 }} />;
 }
 
-function Header({ data }: { data: Result }) {
+export function Header({ term, year }: { term: string; year: string }) {
   return (
     <Box
       sx={{
-        width: '95%',
-        mx: 'auto',
-        display: 'flex',
-        alignItems: 'stretch',
-        justifyContent: 'space-between',
+        width: "95%",
+        mx: "auto",
+        display: "flex",
+        alignItems: "stretch",
+        justifyContent: "space-between",
       }}
     >
       <Logo />
       <Box
         sx={{
           flexGrow: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          textAlign: 'center',
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          textAlign: "center",
         }}
       >
         <Typography
           variant="h4"
-          sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}
+          sx={{ fontWeight: "bold", fontSize: "1.5rem" }}
         >
           Prem Chandra Public School
         </Typography>
-        <Typography variant="body1" sx={{ fontSize: '0.9rem' }}>
+        <Typography variant="body1" sx={{ fontSize: "0.9rem" }}>
           Rajopatti, Dumra Road, Sitamarhi
         </Typography>
         <Typography
           variant="body1"
-          sx={{ fontWeight: 'bold', fontSize: '0.9rem' }}
+          sx={{ fontWeight: "bold", fontSize: "0.9rem" }}
         >
-          Result of
-          <RenderTerm term={data.results.meta.term} /> Examination{' '}
-          {data.results.meta.year}-
+          Result of <RenderTerm term={term} /> Examination {year}-
           {/* assuming that the year is in pattern 2024 */}
-          {(Number(data.results.meta.year) % 100) + 1}
+          {(Number(year) % 100) + 1}
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            fontSize: "0.9rem",
+            fontStyle: "italic",
+            textDecoration: "underline",
+          }}
+        >
+          Reg no: 2061074202466220258
         </Typography>
       </Box>
       <Logo />
@@ -170,19 +191,19 @@ function capitaliseFirstLetter(string: string) {
 
 function RenderTerm({ term }: { term: string }) {
   switch (term) {
-    case 'first':
+    case "first":
       return (
         <>
           1<sup>st</sup> Term
         </>
       );
-    case 'second':
+    case "second":
       return (
         <>
           2<sup>nd</sup> Term
         </>
       );
-    case 'annual':
+    case "annual":
       return <> Annual</>;
 
     default:
@@ -235,7 +256,7 @@ const StudentResultTable = ({ subjects }: StudentResultTableProps) => {
       <TableContainer>
         <Table aria-label="simple table">
           <TableHead>
-            <TableRow sx={{ backgroundColor: '#eeeeee' }}>
+            <TableRow sx={{ backgroundColor: "#eeeeee" }}>
               <TableCell>Subject</TableCell>
               <TableCell align="center" colSpan={2}>
                 Obtained Marks
@@ -260,8 +281,8 @@ const StudentResultTable = ({ subjects }: StudentResultTableProps) => {
               return (
                 <TableRow
                   sx={{
-                    '&:nth-of-type(odd)': {
-                      backgroundColor: '#eeeeee',
+                    "&:nth-of-type(odd)": {
+                      backgroundColor: "#eeeeee",
                     },
                   }}
                   key={subject.subjectName}
@@ -288,7 +309,7 @@ const StudentResultTable = ({ subjects }: StudentResultTableProps) => {
               <TableCell align="center">{totalMarks}</TableCell>
               <TableCell />
             </TableRow>
-            <TableRow sx={{ backgroundColor: '#eeeeee' }}>
+            <TableRow sx={{ backgroundColor: "#eeeeee" }}>
               <TableCell colSpan={4} align="right">
                 Overall Percentage
               </TableCell>
@@ -309,7 +330,7 @@ function GradeInformation() {
     <TableContainer sx={{ mt: 2 }}>
       <Table aria-label="grades table">
         <TableHead>
-          <TableRow sx={{ backgroundColor: '#eeeeee' }}>
+          <TableRow sx={{ backgroundColor: "#eeeeee" }}>
             <TableCell>Grade</TableCell>
             <TableCell align="center">A1</TableCell>
             <TableCell align="center">A2</TableCell>
@@ -367,13 +388,13 @@ const AttendanceComponent = ({
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'row',
-        width: '100%',
-        paddingTop: '10px',
-        paddingBottom: '10px',
-        alignItems: 'flex-start',
-        gap: '10px',
+        display: "flex",
+        flexDirection: "row",
+        width: "100%",
+        paddingTop: "10px",
+        paddingBottom: "10px",
+        alignItems: "flex-start",
+        gap: "10px",
       }}
     >
       <div style={{ flex: 3 }}>
@@ -382,13 +403,13 @@ const AttendanceComponent = ({
             <Table
               aria-label="grades table"
               sx={{
-                '& .MuiTableCell-root': {
+                "& .MuiTableCell-root": {
                   p: 0.3,
                 },
               }}
             >
               <TableHead>
-                <TableRow sx={{ backgroundColor: '#eeeeee' }}>
+                <TableRow sx={{ backgroundColor: "#eeeeee" }}>
                   <TableCell>CO-SCHOLASTIC AREAS</TableCell>
                   <TableCell>
                     <RenderTerm term={term} /> Exam
@@ -400,7 +421,7 @@ const AttendanceComponent = ({
                   <TableCell>Work Education</TableCell>
                   <TableCell>A1</TableCell>
                 </TableRow>
-                <TableRow sx={{ backgroundColor: '#eeeeee' }}>
+                <TableRow sx={{ backgroundColor: "#eeeeee" }}>
                   <TableCell>Art Education</TableCell>
                   <TableCell>A1</TableCell>
                 </TableRow>
@@ -408,7 +429,7 @@ const AttendanceComponent = ({
                   <TableCell>Health & Physical Education</TableCell>
                   <TableCell>A1</TableCell>
                 </TableRow>
-                <TableRow sx={{ backgroundColor: '#eeeeee' }}>
+                <TableRow sx={{ backgroundColor: "#eeeeee" }}>
                   <TableCell>Discipline</TableCell>
                   <TableCell>A1</TableCell>
                 </TableRow>
@@ -420,36 +441,36 @@ const AttendanceComponent = ({
       <div
         style={{
           flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          border: '1px solid #ccc',
-          padding: '5px',
+          display: "flex",
+          flexDirection: "column",
+          border: "1px solid #ccc",
+          padding: "5px",
         }}
       >
         <Typography
           variant="body1"
           fontWeight={600}
-          sx={{ marginBottom: '6px' }}
+          sx={{ marginBottom: "6px" }}
         >
-          Attendance:{' '}
+          Attendance:{" "}
           <Typography
             variant="body1"
-            component={'span'}
-            sx={{ marginBottom: '6px' }}
+            component={"span"}
+            sx={{ marginBottom: "6px" }}
           >
-            {' '}
-            {attendancePercentage.toFixed(2)}%{' '}
+            {" "}
+            {attendancePercentage.toFixed(2)}%{" "}
           </Typography>
         </Typography>
         <Stack alignItems="center" width="min-content">
           <Typography variant="body1">{attendanceData.present}</Typography>
           <Box
             sx={{
-              width: '20px',
-              height: '1px',
-              bgcolor: 'black',
-              '-webkit-print-color-adjust': 'exact',
-              colorAdjust: 'exact',
+              width: "20px",
+              height: "1px",
+              bgcolor: "black",
+              "-webkit-print-color-adjust": "exact",
+              colorAdjust: "exact",
             }}
           ></Box>
           <Typography variant="body1">{attendanceData.outOf}</Typography>
@@ -463,23 +484,23 @@ const SignatureComponent = () => {
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width: "100%",
       }}
     >
-      <Box sx={{ flex: 1, mt: 10, width: '100%' }}>
+      <Box sx={{ flex: 1, mt: 10, width: "100%" }}>
         <Typography textAlign="center" width="100%" variant="body1">
           CLASS TEACHER SIGN
         </Typography>
       </Box>
-      <Box sx={{ flex: 1, mt: 10, width: '100%' }}>
+      <Box sx={{ flex: 1, mt: 10, width: "100%" }}>
         <Typography textAlign="center" width="100%" variant="body1">
           PARENTS SIGN
         </Typography>
       </Box>
-      <Box sx={{ flex: 1, mt: 10, width: '100%' }}>
+      <Box sx={{ flex: 1, mt: 10, width: "100%" }}>
         <Typography textAlign="center" width="100%" variant="body1">
           PRINCIPAL SIGN
         </Typography>

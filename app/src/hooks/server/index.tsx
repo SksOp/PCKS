@@ -5,6 +5,7 @@ import {
   CreateTermResultForStudent,
   CreateTermResultForStudentResponse,
   GetAdmissionNoAvaibilityResponse,
+  GetRankingResponse,
   HandleAdmissionRequest,
   HandleAdmissionResponse,
   HandleStudentUpdateRequest,
@@ -80,6 +81,14 @@ export function useFirebaseFunctions() {
     const data: CreateTermResultForStudentResponse = response.data;
     return data;
   };
+
+  const getRanking = async (batch: string, term: string, className: string) => {
+    const URL = `${API}/v1/ranking/${batch}/${term}/${className}`;
+    const response = await axios.get(URL);
+    const data: GetRankingResponse = response.data;
+    return data;
+  };
+
   return {
     getAdmissionNoAvaibility,
     handleAdmissionRequest,
@@ -88,5 +97,6 @@ export function useFirebaseFunctions() {
     handleCreateTerm,
     handleCreateResult,
     handleCreateTermResultForStudent,
+    getRanking,
   };
 }

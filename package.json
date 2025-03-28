@@ -13,7 +13,8 @@
     "app/",
     "functions/",
     "packages/*",
-    "desktop/"
+    "desktop/",
+    "snapshot/"
   ],
   "private": true
 }

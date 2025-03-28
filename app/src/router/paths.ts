@@ -13,6 +13,7 @@ export const paths = {
       batch: "/dashboard/result/batch/",
       view: "/dashboard/result/view",
       add: "/dashboard/result/add",
+      ranking: "/dashboard/result/ranking",
     },
   },
   logout: "/logout",

@@ -14,12 +14,17 @@ const ResultBatch = React.lazy(() => import("src/sections/resultBatch"));
 const AddResult = React.lazy(() => import("src/sections/addResult"));
 const ResultView = React.lazy(() => import("src/sections/resultView"));
 const AllStudent = React.lazy(() => import("src/sections/allStudents"));
+const Ranking = React.lazy(() => import("src/sections/ranking"));
 
 export default function Router() {
   return useRoutes([...root]);
 }
 
 const resultPaths = [
+  {
+    path: paths.dashboard.result.ranking,
+    element: <Ranking />,
+  },
   {
     path: paths.dashboard.result.view,
     // no outlet here because no nested routes
