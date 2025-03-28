@@ -59,7 +59,6 @@ function ResultBatch({ batch, term }: Props) {
 
   return (
     <Box sx={{ margin: 4 }}>
-      <AddStudentToTheBatchDialog term={term} batch={batch} />
       {Object.entries(grouped).map(([classKey, results]) => (
         <Box key={classKey} sx={{ marginBottom: 4 }}>
           <Accordion key={classKey}>
@@ -80,6 +79,7 @@ function ResultBatch({ batch, term }: Props) {
           </Accordion>
         </Box>
       ))}
+      <AddStudentToTheBatchDialog term={term} batch={batch} />
     </Box>
   );
 }
@@ -185,8 +185,8 @@ const AddStudentToTheBatchDialog = ({
   const handleAddStudent = async () => {
     const data: CreateTermResultForStudent = {
       admissionNo,
-      term,
-      batch,
+      term: term.toLocaleLowerCase(),
+      batch: batch,
     };
     const response = await handleCreateTermResultForStudent(data);
     if (response.success) {
@@ -201,19 +201,28 @@ const AddStudentToTheBatchDialog = ({
     }
   };
   return (
-    <Dialog open={open} onClose={() => setOpen(false)}>
-      <DialogTitle>Add Student to the Batch</DialogTitle>
-      <DialogContent>
-        <TextField
-          label="Admission No"
-          value={admissionNo}
-          onChange={(e) => setAdmissionNo(e.target.value)}
-          fullWidth
-        />
-        <Button variant="contained" onClick={handleAddStudent}>
-          Add
-        </Button>
-      </DialogContent>
-    </Dialog>
+    <>
+      <Button
+        variant="contained"
+        sx={{ ml: "auto", mb: 2 }}
+        onClick={() => setOpen(true)}
+      >
+        Add New Student
+      </Button>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>Add Student to the Batch</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Admission No"
+            value={admissionNo}
+            onChange={(e) => setAdmissionNo(e.target.value)}
+            fullWidth
+          />
+          <Button variant="contained" onClick={handleAddStudent}>
+            Add
+          </Button>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
