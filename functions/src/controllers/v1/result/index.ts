@@ -5,6 +5,7 @@ import {
   CreateResultRequest,
   CreateTermRequest,
   CreateTermResponse,
+  CreateTermResultForStudent,
   Result,
   Student,
 } from "types";
@@ -122,4 +123,59 @@ export async function createResult(req: Request, res: Response) {
       success: false,
     });
   }
+}
+
+export async function createTermResultForStudent(req: Request, res: Response) {
+  const data = req.body.data as CreateTermResultForStudent;
+  const { admissionNo, term, batch } = data;
+
+  // check if the students result is already created
+  const path = `${resultsCollection}/${batch}/${term}/${admissionNo}`;
+  const studentRef = DB.doc(path);
+  try {
+    const studentSnapshot = await studentRef.get();
+    if (studentSnapshot.exists) {
+      return res.status(400).send({
+        message: "Result already exists",
+        success: false,
+      });
+    }
+  } catch (error: FirebaseError | any) {
+    return res.status(500).send({
+      message: error.message || "Failed to create result",
+      success: false,
+    });
+  }
+
+  // get the student data
+  const studentSnapshot = await STUDENTS_COLLECTION.doc(admissionNo).get();
+  const student = studentSnapshot.data() as Student;
+
+  // create the result
+  const result: Result = {
+    admissionNo,
+    currentClass: student.currentClass,
+    currentSection: student.currentSection,
+    currentRoll: student.currentRoll,
+    results: {
+      meta: {
+        term: term,
+        year: batch,
+      },
+      subjects: createEmptyResultBasedOnClass(student.currentClass),
+    },
+    attendance: {
+      present: 0,
+      outOf: 0,
+    },
+    isCompleted: false,
+  };
+
+  // create the result
+  await studentRef.set(result, { merge: true });
+
+  return res.status(200).send({
+    message: "Result created successfully",
+    success: true,
+  });
 }

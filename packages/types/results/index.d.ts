@@ -45,6 +45,17 @@ export interface CreateTermResponse {
   success: boolean;
 }
 
+export interface CreateTermResultForStudent {
+  admissionNo: string;
+  term: string;
+  batch: string;
+}
+
+export interface CreateTermResultForStudentResponse {
+  message: string;
+  success: boolean;
+}
+
 export interface CreateResultRequest {
   subjects: Subject[];
   term: string;
