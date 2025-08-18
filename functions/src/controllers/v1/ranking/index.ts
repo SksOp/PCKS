@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import { DB, resultsCollection, studentsCollection } from "../../../db";
-import { GetRankingResponse, Result, Student } from "types";
+import { Request, Response } from 'express';
+import { DB, resultsCollection, studentsCollection } from '../../../db';
+import { GetRankingResponse, Result, Student } from 'types';
 
 const getStudentDetailByAdmissionNo = async (admissionNo: string) => {
   const student = await DB.collection(studentsCollection)
@@ -32,15 +32,15 @@ export async function rankingController(req: Request, res: Response) {
   if (isNaN(numericClass)) {
     // For string classes like 'ukg', 'lkg', 'nursery'
     classQuery = DB.collection(collection).where(
-      "currentClass",
-      "==",
+      'currentClass',
+      '==',
       className
     );
   } else {
     // For numeric classes like 1, 2, etc
     classQuery = DB.collection(collection)
-      .where("currentClass", "==", numericClass)
-      .where("isCompleted", "==", true);
+      .where('currentClass', '==', numericClass)
+      .where('isCompleted', '==', true);
   }
 
   const results = await classQuery.get();
@@ -86,26 +86,26 @@ export async function rankingController(req: Request, res: Response) {
     (a, b) => Number(b.percentage) - Number(a.percentage)
   );
 
-  if (content === "csv") {
-    const csvHeader = "name,roll,totalMarks,obtainedMarks,percentage,rank\n";
+  if (content === 'csv') {
+    const csvHeader = 'name,roll,totalMarks,obtainedMarks,percentage,rank\n';
     const csvRows = sortedDetails.map(
       (detail, index) =>
         `${detail.name},${detail.roll},${detail.totalMarks},${
           detail.obtainedMarks
         },${detail.percentage},${index + 1}`
     );
-    const csvContent = csvHeader + csvRows.join("\n");
+    const csvContent = csvHeader + csvRows.join('\n');
 
-    res.setHeader("Content-Type", "text/csv");
+    res.setHeader('Content-Type', 'text/csv');
     res.setHeader(
-      "Content-Disposition",
+      'Content-Disposition',
       `attachment; filename=ranking-${batch}-${term}-${className}.csv`
     );
-    return res.status(200).send(csvContent);
+    res.status(200).send(csvContent);
   }
 
   const response: GetRankingResponse = {
-    message: "success",
+    message: 'success',
     success: true,
     data: sortedDetails.map((detail, index) => ({
       name: detail.name,
