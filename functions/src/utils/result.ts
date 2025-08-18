@@ -1,94 +1,94 @@
-import { Subject } from "types";
+import { Subject } from 'types';
 
 const empthNurseryResult: Subject[] = [
   {
-    subjectName: "English",
+    subjectName: 'English',
     results: { theory: null, fullMarks: 100, other: null },
   },
   {
-    subjectName: "Hindi",
+    subjectName: 'Hindi',
     results: { theory: null, fullMarks: 100, other: null },
   },
   {
-    subjectName: "Maths",
+    subjectName: 'Maths',
     results: { theory: null, fullMarks: 100, other: null },
   },
 ];
 const empthLkgResult: Subject[] = [
   {
-    subjectName: "English",
+    subjectName: 'English',
     results: { theory: null, fullMarks: 100, other: null },
   },
   {
-    subjectName: "Hindi",
+    subjectName: 'Hindi',
     results: { theory: null, fullMarks: 100, other: null },
   },
   {
-    subjectName: "Maths",
+    subjectName: 'Maths',
     results: { theory: null, fullMarks: 100, other: null },
   },
-  {
-    subjectName: "G.K.",
-    results: { theory: null, fullMarks: 100, other: null },
-  },
+  // {
+  //   subjectName: "G.K.",
+  //   results: { theory: null, fullMarks: 100, other: null },
+  // },
 ];
 
 const empthUkgResult: Subject[] = [
   {
-    subjectName: "English",
+    subjectName: 'English',
     results: { theory: null, fullMarks: 100, other: null },
   },
   {
-    subjectName: "Hindi",
+    subjectName: 'Hindi',
     results: { theory: null, fullMarks: 100, other: null },
   },
   {
-    subjectName: "Maths",
+    subjectName: 'Maths',
     results: { theory: null, fullMarks: 100, other: null },
   },
   {
-    subjectName: "G.K.",
+    subjectName: 'G.K.',
     results: { theory: null, fullMarks: 100, other: null },
   },
 ];
 
 const empthClassSeniorResult: Subject[] = [
   {
-    subjectName: "English",
+    subjectName: 'English',
     results: { theory: null, fullMarks: 100, other: null },
   },
   {
-    subjectName: "Hindi",
+    subjectName: 'Hindi',
     results: { theory: null, fullMarks: 100, other: null },
   },
   {
-    subjectName: "Maths",
+    subjectName: 'Maths',
     results: { theory: null, fullMarks: 100, other: null },
   },
   {
-    subjectName: "Science",
+    subjectName: 'Science',
     results: { theory: null, fullMarks: 100, other: null },
   },
   {
-    subjectName: "Social Science",
+    subjectName: 'Social Science',
     results: { theory: null, fullMarks: 100, other: null },
   },
   {
-    subjectName: "GK",
+    subjectName: 'GK',
     results: { theory: null, fullMarks: 100, other: null },
   },
   {
-    subjectName: "Computer",
+    subjectName: 'Computer',
     results: { theory: null, fullMarks: 100, other: null },
   },
 ];
 export function createEmptyResultBasedOnClass(currentClass: string) {
   switch (currentClass) {
-    case "Nur.":
+    case 'Nur.':
       return empthNurseryResult;
-    case "L.K.G":
+    case 'L.K.G':
       return empthLkgResult;
-    case "U.K.G":
+    case 'U.K.G':
       return empthUkgResult;
     default:
       return empthClassSeniorResult;
