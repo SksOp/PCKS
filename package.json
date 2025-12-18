@@ -14,7 +14,8 @@
     "functions/",
     "packages/*",
     "desktop/",
-    "snapshot/"
+    "snapshot/",
+    "cli/"
   ],
   "private": true
 }
