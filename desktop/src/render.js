@@ -38,7 +38,7 @@ async function download(event) {
     isCompleted: doc.data().isCompleted,
   }));
 
-  const isDevelopment = false
+  const isDevelopment = process.env.NODE_ENV === "development";
   const baseURL = isDevelopment
     ? "http://localhost:3000"
     : "https://pcksstm.web.app";

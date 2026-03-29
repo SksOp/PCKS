@@ -7,7 +7,6 @@ DB.settings({
 });
 
 const isProduction = process.env.NODE_ENV === "production";
-console.log("isProduction", isProduction);
 
 export const studentsCollection = isProduction ? "students" : "students-dev";
 export const STUDENTS_COLLECTION = DB.collection(studentsCollection);
