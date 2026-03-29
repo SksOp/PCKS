@@ -22,7 +22,8 @@ DB.settings({
   ignoreUndefinedProperties: true,
 });
 
-const isDevelopment = process.env.NODE_ENV === "development";
+const isDevelopment = false
+console.log("isDevelopment", isDevelopment);
 
 const studentsCollection = !isDevelopment ? "students" : "students-dev";
 const STUDENTS_COLLECTION_REF = DB.collection(studentsCollection);
